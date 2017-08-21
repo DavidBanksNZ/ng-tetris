@@ -1,0 +1,3 @@
+
+export const RESET_SCORE = 'RESET_SCORE';
+export const INCREMENT_SCORE = 'INCREMENT_SCORE';
