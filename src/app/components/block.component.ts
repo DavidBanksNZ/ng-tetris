@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {BlockType} from '../enums/blockType.enum';
-import {BlockOrientation} from '../enums/blockOrientation.enum';
+import {IBlock} from '../interfaces/block.interface';
 
 @Component({
 	selector: 'app-block',
@@ -12,7 +11,5 @@ import {BlockOrientation} from '../enums/blockOrientation.enum';
 })
 
 export class BlockComponent {
-	@Input() readonly type: BlockType;
-	@Input() readonly orientation: BlockOrientation;
-	@Input() readonly position: number[];
+	@Input() readonly block: IBlock;
 }

@@ -2,9 +2,10 @@ import {BlockType} from '../enums/blockType.enum';
 import {BlockOrientation} from '../enums/blockOrientation.enum';
 import {ICell} from '../interfaces/cell.interface';
 
-export interface IState {
+export interface ITetrisState {
 	readonly numRows: number;
 	readonly numCols: number;
+	readonly cellSize: number;
 	readonly level: number;
 	readonly linesUntilNextLevel: number;
 	readonly activeBlockType: BlockType;
@@ -14,4 +15,8 @@ export interface IState {
 	readonly totalBlocks: number;
 	readonly totalLinesCleared: number;
 	readonly unclearedCells: ICell[];
+}
+
+export interface IStore {
+	tetris: ITetrisState;
 }
