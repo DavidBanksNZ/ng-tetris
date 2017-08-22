@@ -9,8 +9,8 @@ import {ICell} from '../interfaces/cell.interface';
 			class="{{'app-cell app-cell-' + cell.type}}"
 			[style.width]="size + 'px'"
 			[style.height]="size + 'px'"
-			[style.left]="cell.column * size + 'px'"
-			[style.top]="cell.row * size + 'px'"
+			[style.left]="cell.column * (size - 1) + 'px'"
+			[style.top]="cell.row * (size - 1) + 'px'"
 		></div>
 	`
 })

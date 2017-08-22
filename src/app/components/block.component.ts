@@ -5,11 +5,15 @@ import {IBlock} from '../interfaces/block.interface';
 	selector: 'app-block',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="app-block">
-		</div>
+		<app-cell
+			*ngFor="let cell of block.cells"
+			[cell]="cell"
+			[size]="cellSize"
+		></app-cell>
 	`
 })
 
 export class BlockComponent {
 	@Input() readonly block: IBlock;
+	@Input() readonly cellSize: number;
 }

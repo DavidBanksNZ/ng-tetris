@@ -3,16 +3,44 @@ body {
 	font-family: Arial, sans-serif;
 }
 
-* {
-	box-sizing: border-box;
-}
-
 .app-board {
 	position: relative;
-	border: 2px solid #333;
+	border: 2px solid #aaa;
+	box-sizing: content-box;
 }
 
 .app-cell {
-	border: 1px solid #aaa;
+	border: 1px solid #333;
 	position: absolute;
+	display: inline-block;
+	margin: 0 -1px -1px 0;
+	box-sizing: border-box;
+}
+
+.app-cell-pyramid {
+	background-color: yellow;
+}
+
+.app-cell-square {
+	background-color: red;
+}
+
+.app-cell-zig-zag {
+	background-color: #87cfe9;
+}
+
+.app-cell-reverse-zig-zag {
+	background-color: #66ff99;
+}
+
+.app-cell-l {
+	background-color: #2244cc;
+}
+
+.app-cell-reverse-l {
+	background-color: #992299;
+}
+
+.app-cell-long {
+	background-color: #ff6600;
 }

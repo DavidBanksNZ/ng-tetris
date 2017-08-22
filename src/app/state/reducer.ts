@@ -18,8 +18,8 @@ const INITIAL_STATE: ITetrisState = {
 	totalLinesCleared: 0,
 	unclearedCells: [
 		{row: 5, column: 5, type: BlockType.Pyramid},
-		{row: 14, column: 1, type: BlockType.Square},
-		{row: 12, column: 8, type: BlockType.ZigZag},
+		{row: 12, column: 8, type: BlockType.Square},
+		{row: 12, column: 9, type: BlockType.ZigZag},
 		{row: 2, column: 7, type: BlockType.L}
 	]
 };
