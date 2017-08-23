@@ -2,7 +2,8 @@ import {ITetrisState} from './state.interface';
 import {Action} from '@ngrx/store';
 import {BlockType} from '../enums/blockType.enum';
 import {NEW_GAME, TOGGLE_PAUSE} from './actions';
-import {centerBlock, generateRandomBlock} from '../helpers/generateBlock';
+import {centerBlock} from '../helpers/centerBlock';
+import {generateRandomBlock} from '../helpers/generateRandomBlock';
 
 
 const INITIAL_STATE: ITetrisState = {
