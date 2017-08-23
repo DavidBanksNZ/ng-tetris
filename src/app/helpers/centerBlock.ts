@@ -3,7 +3,7 @@ import {getBlockWidth} from './getBlockWidth';
 
 export function centerBlock(block: IBlock, numCols: number): IBlock {
 	const width = getBlockWidth(block);
-	const offset = (numCols - width) / 2;
+	const offset = Math.floor((numCols - width) / 2);
 	return {
 		...block,
 		cells: block.cells.map(cell => ({...cell, column: cell.column + offset}))
