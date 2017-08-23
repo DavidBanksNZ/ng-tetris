@@ -7,3 +7,5 @@ export enum BlockType {
 	L = 'l',
 	ReverseL = 'reverse-l'
 }
+
+export const blockTypeEnumKeys = Object.keys(BlockType).filter(key => isNaN(Number(key)));

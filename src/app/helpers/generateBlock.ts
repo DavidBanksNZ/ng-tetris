@@ -1,4 +1,4 @@
-import {BlockType} from '../enums/blockType.enum';
+import {BlockType, blockTypeEnumKeys} from '../enums/blockType.enum';
 import {IBlock} from '../interfaces/block.interface';
 import {BlockOrientation} from '../enums/blockOrientation.enum';
 import {ICell} from '../interfaces/cell.interface';
@@ -77,4 +77,24 @@ export function generateBlock (type: BlockType): IBlock {
 	};
 }
 
+export function generateRandomBlock(): IBlock {
+	const rand = Math.floor(Math.random() * blockTypeEnumKeys.length);
+	const type = BlockType[blockTypeEnumKeys[rand]];
+	return generateBlock(type);
+}
 
+export function centerBlock(block: IBlock, numCols: number): IBlock {
+	const width = getBlockWidth(block);
+	const offset = (numCols - width) / 2;
+	return {
+		...block,
+		cells: block.cells.map(cell => ({...cell, column: cell.column + offset}))
+	};
+}
+
+export function getBlockWidth(block: IBlock): number {
+	const columns = block.cells.map(cell => cell.column);
+	const min = Math.min(...columns);
+	const max = Math.max(...columns);
+	return max - min + 1;
+}

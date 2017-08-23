@@ -7,13 +7,15 @@ import {BoardComponent} from './components/board.component';
 import {tetrisReducer} from './state/reducer';
 import {CellComponent} from './components/cell.component';
 import {BlockComponent} from './components/block.component';
+import {ControlsComponent} from './components/controls.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		BoardComponent,
 		CellComponent,
-		BlockComponent
+		BlockComponent,
+		ControlsComponent
 	],
 	imports: [
 		BrowserModule,

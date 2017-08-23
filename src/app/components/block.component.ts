@@ -6,7 +6,7 @@ import {IBlock} from '../interfaces/block.interface';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<app-cell
-			*ngFor="let cell of block.cells"
+			*ngFor="let cell of block?.cells"
 			[cell]="cell"
 			[size]="cellSize"
 		></app-cell>

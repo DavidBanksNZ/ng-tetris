@@ -1,8 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {ITetrisState} from '../state/state.interface';
-import {generateBlock} from '../helpers/generateBlock';
-import {BlockType} from '../enums/blockType.enum';
-import {offsetBlock} from '../helpers/offsetBlock';
 
 @Component({
 	selector: 'app-board',
@@ -18,15 +15,13 @@ import {offsetBlock} from '../helpers/offsetBlock';
 				[cell]="cell"
 				[size]="state.cellSize"
 			></app-cell>
-			<app-block [block]="block" [cellSize]="state.cellSize"></app-block>
+			<app-block [block]="state.activeBlock" [cellSize]="state.cellSize"></app-block>
 		</div>
 	`
 })
 export class BoardComponent {
 
 	@Input() state: ITetrisState;
-
-	public block = offsetBlock(generateBlock(BlockType.ZigZag), 4, 0, 20, 10);
 
 	get width(): number {
 		return this.state.numCols * (this.state.cellSize - 1) + 1;
