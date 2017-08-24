@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
 import {ITetrisState} from '../state/state.interface';
 
 @Component({
@@ -22,6 +22,32 @@ import {ITetrisState} from '../state/state.interface';
 export class BoardComponent {
 
 	@Input() state: ITetrisState;
+
+	@Output() onMoveActiveBlockLeft = new EventEmitter<boolean>();
+	@Output() onMoveActiveBlockRight = new EventEmitter<boolean>();
+	@Output() onMoveActiveBlockDown = new EventEmitter<boolean>();
+	@Output() onRotateActiveBlock = new EventEmitter<void>();
+
+	@HostListener('document:keydown', ['$event'])
+	onKeyUp($event) {
+		if (this.state.isStarted && !this.state.isPaused && !this.state.isFinished) {
+			switch ($event.keyCode) {
+				case 37:
+					this.onMoveActiveBlockLeft.emit($event.shiftKey);
+					break;
+				case 39:
+					this.onMoveActiveBlockRight.emit($event.shiftKey);
+					break;
+				case 38:
+					this.onRotateActiveBlock.emit();
+					break;
+				case 40:
+					this.onMoveActiveBlockDown.emit($event.shiftKey);
+					break;
+			}
+		}
+	}
+
 
 	get width(): number {
 		return this.state.numCols * (this.state.cellSize - 1) + 1;

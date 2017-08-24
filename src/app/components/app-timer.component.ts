@@ -4,7 +4,9 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Outp
 	selector: 'app-timer',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="app-timer"></div>
+		<div class="app-timer">
+			{{isFinished ? 'Game over!' : ''}}
+		</div>
 	`
 })
 
@@ -14,6 +16,7 @@ export class TimerComponent implements OnChanges {
 	@Input() isStarted: boolean;
 	@Input() isFinished: boolean;
 	@Input() isPaused: boolean;
+	@Input() gameId: boolean;
 
 	@Output() onTick = new EventEmitter<void>();
 
@@ -23,9 +26,12 @@ export class TimerComponent implements OnChanges {
 	private interval = 0;
 
 	ngOnChanges(changes: SimpleChanges) {
-		const {level, isStarted, isFinished, isPaused} = changes;
+		const {level, isStarted, isFinished, isPaused, gameId} = changes;
 
-		if (isStarted.currentValue && !isStarted.previousValue) {
+		if (gameId.currentValue !== gameId.previousValue && !gameId.isFirstChange()) {
+			this.partial = 0;
+			this.resetTimer(this.level);
+		} else if (isStarted.currentValue && !isStarted.previousValue) {
 			this.resetTimer(this.level);
 		} else if (isFinished.currentValue && !isFinished.previousValue) {
 			this.stopTimer();
@@ -43,6 +49,7 @@ export class TimerComponent implements OnChanges {
 		this.time = Date.now();
 		this.interval = Math.max(1, 10 - level) * 50;
 		this.timer = setTimeout(() => {
+			this.partial = 0;
 			this.tick();
 			this.timer = setInterval(() => this.tick(), this.interval);
 		}, this.partial);
@@ -52,7 +59,15 @@ export class TimerComponent implements OnChanges {
 		if (this.timer) {
 			clearInterval(this.timer);
 			this.timer = null;
-			this.partial = trackPartial ? this.interval - (Date.now() - this.time) : 0;
+			if (this.partial === 0) {
+				// If partial time is zero, no timeout pending
+				this.partial = trackPartial ? this.interval - (Date.now() - this.time) : 0;
+			} else {
+				// This scenario occurs when game is paused too fast after the last resume
+				// for the previous partial timeout to run. When this happens, decrement the
+				// partial value by how much time elapsed.
+				this.partial -= (Date.now() - this.time);
+			}
 		}
 	}
 

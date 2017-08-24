@@ -1,6 +1,5 @@
 import {ITetrisState} from './state.interface';
 import {Action} from '@ngrx/store';
-import {BlockType} from '../enums/blockType.enum';
 import {MOVE_ACTIVE_BLOCK_DOWN, NEW_GAME, TOGGLE_PAUSE} from './actions';
 import {centerBlock} from '../helpers/centerBlock';
 import {generateRandomBlock} from '../helpers/generateRandomBlock';
@@ -8,6 +7,7 @@ import {offsetBlock} from '../helpers/offsetBlock';
 
 
 const INITIAL_STATE: ITetrisState = {
+	gameId: 0,
 	numRows: 20,
 	numCols: 10,
 	cellSize: 36,
@@ -17,12 +17,7 @@ const INITIAL_STATE: ITetrisState = {
 	score: 0,
 	totalBlocks: 0,
 	totalLinesCleared: 0,
-	unclearedCells: [
-		{row: 5, column: 5, type: BlockType.Pyramid},
-		{row: 12, column: 8, type: BlockType.Square},
-		{row: 12, column: 9, type: BlockType.ZigZag},
-		{row: 2, column: 7, type: BlockType.L}
-	],
+	unclearedCells: [],
 	isStarted: false,
 	isFinished: false,
 	isPaused: false
@@ -36,6 +31,7 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 		case NEW_GAME:
 			return {
 				...state,
+				gameId: Date.now(),
 				isStarted: true,
 				isPaused: false,
 				isFinished: false,
@@ -56,21 +52,49 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 
 		case MOVE_ACTIVE_BLOCK_DOWN:
 			const {activeBlock, numRows, numCols} = state;
-			let updatedBlock = offsetBlock(activeBlock, 0, 1, numRows, numCols);
-			let cells = state.unclearedCells;
+			let unclearedCells = state.unclearedCells;
 
-			if (updatedBlock.cells[0].row === activeBlock.cells[0].row) {
-				updatedBlock = centerBlock(generateRandomBlock(), state.numCols);
-				cells = [
-					...cells,
-					...activeBlock.cells
-				];
+			let spaceToMove = true;
+			const columns = activeBlock.cells.map(cell => cell.column);
+			const minColumn = Math.min(...columns);
+			const maxColumn = Math.max(...columns);
+
+			for (let i = minColumn; i <= maxColumn; i++) {
+				const cellsInColumn = activeBlock.cells.filter(cell => cell.column === i);
+				const rows = cellsInColumn.map(cell => cell.row);
+				const maxRow = Math.max(...rows);
+				const unclearedCellsInColumn = unclearedCells.filter(cell => cell.column === i);
+
+				const highestUnclearedCellRow = unclearedCellsInColumn.length > 0 ?
+					Math.min(...unclearedCellsInColumn.map(cell => cell.row)) :
+					numRows;
+
+				if (maxRow + 1 === highestUnclearedCellRow) {
+					spaceToMove = false;
+					break;
+				}
+			}
+
+			let updatedBlock;
+			let gameOver = false;
+
+			if (spaceToMove) {
+				updatedBlock = offsetBlock(activeBlock, 0, 1, numRows, numCols);
+			} else {
+				const minRow = Math.min(...activeBlock.cells.map(cell => cell.row));
+				unclearedCells = [...unclearedCells, ...activeBlock.cells];
+				if (minRow > 0) {
+					updatedBlock = offsetBlock(centerBlock(generateRandomBlock(), state.numCols), 0, 1, numRows, numCols);
+				} else {
+					gameOver = true;
+				}
 			}
 
 			return {
 				...state,
-				unclearedCells: cells,
-				activeBlock: updatedBlock
+				unclearedCells,
+				activeBlock: updatedBlock,
+				isFinished: gameOver
 			};
 
 		default:

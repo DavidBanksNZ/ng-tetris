@@ -1,6 +1,10 @@
 
 import {Action} from '@ngrx/store';
 
+interface ActionWithPayload<T> extends Action {
+	payload: T;
+}
+
 export const RESET_SCORE = 'RESET_SCORE';
 export const INCREMENT_SCORE = 'INCREMENT_SCORE';
 
@@ -20,14 +24,14 @@ export function togglePause(): Action {
 	return {type: TOGGLE_PAUSE};
 }
 
-export function moveActiveBlockDown(): Action {
-	return {type: MOVE_ACTIVE_BLOCK_DOWN};
+export function moveActiveBlockDown(allTheWay: boolean): ActionWithPayload<boolean> {
+	return {type: MOVE_ACTIVE_BLOCK_DOWN, payload: allTheWay};
 }
 
-export function moveActiveBlockLeft(): Action {
-	return {type: MOVE_ACTIVE_BLOCK_LEFT};
+export function moveActiveBlockLeft(allTheWay: boolean): ActionWithPayload<boolean> {
+	return {type: MOVE_ACTIVE_BLOCK_LEFT, payload: allTheWay};
 }
 
-export function moveActiveBlockRight(): Action {
-	return {type: MOVE_ACTIVE_BLOCK_RIGHT};
+export function moveActiveBlockRight(allTheWay: boolean): ActionWithPayload<boolean> {
+	return {type: MOVE_ACTIVE_BLOCK_RIGHT, payload: allTheWay};
 }
