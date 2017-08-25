@@ -8,8 +8,8 @@ import {generateRandomBlock} from '../../helpers/generateRandomBlock';
 
 
 export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): ITetrisState {
-	const {activeBlock, numRows, numCols} = state;
-	let unclearedCells = state.unclearedCells;
+	const {activeBlock, numRows, numCols, linesPerLevel} = state;
+	let {unclearedCells, level, linesUntilNextLevel} = state;
 
 	let spacesToMove = numRows;
 	const columns = activeBlock.cells.map(cell => cell.column);
@@ -42,16 +42,19 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 		updatedBlock = offsetBlock(activeBlock, 0, allTheWay ? spacesToMove : 1, numRows, numCols);
 	} else {
 
-		let minRow = Math.min(...activeBlock.cells.map(cell => cell.row));
+		const rows = activeBlock.cells.map(cell => cell.row);
+		let minRow = Math.min(...rows);
+		const maxRow = Math.max(...rows);
 		unclearedCells = [...unclearedCells, ...activeBlock.cells];
+		window['cells'] = unclearedCells;
 
 		// Need to check is rows can be cleared before ending game
-		const rows = activeBlock.cells.map(cell => cell.row);
+		let rowsCleared = 0;
 
-		rows.forEach(row => {
+		// low-high order is very important in this loop, since lower rows may change each iteration.
+		for (let row = Math.max(0, minRow); row <= maxRow; row++) {
 			const unclearedCellsInRow = unclearedCells.filter(cell => cell.row === row);
-			const unclearedCellsColumns = unclearedCellsInRow.map(cell => cell.column);
-			const isFullRow = unclearedCellsColumns.length === numCols;
+			const isFullRow = unclearedCellsInRow.length === numCols;
 			if (isFullRow) {
 				// remove uncleared cells in this row, move above rows down 1
 				unclearedCells = unclearedCells
@@ -59,12 +62,26 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 					.map(cell => {
 						return cell.row < row ? {...cell, row: cell.row + 1} : cell;
 					});
-				minRow += 1;
+				rowsCleared += 1;
 			}
-		});
+		}
+
+		if (rowsCleared > 0) {
+			linesUntilNextLevel -= rowsCleared;
+
+			// TODO - update score
+			if (linesUntilNextLevel <= 0) {
+				level += 1;
+				linesUntilNextLevel = linesPerLevel;
+				// TODO update timer
+			}
+			console.log(`Level ${level}: ${linesUntilNextLevel} remaining`);
+		}
+
+		minRow += rowsCleared;
 
 		if (minRow >= 0) {
-			updatedBlock = offsetBlock(centerBlock(generateRandomBlock(), state.numCols), 0, 1, numRows, numCols);
+			updatedBlock = offsetBlock(centerBlock(generateRandomBlock(), state.numCols), 0, 0, numRows, numCols);
 		} else {
 			gameOver = true;
 		}
@@ -73,6 +90,8 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 	return {
 		...state,
 		unclearedCells,
+		linesUntilNextLevel,
+		level,
 		activeBlock: updatedBlock,
 		isFinished: gameOver
 	};

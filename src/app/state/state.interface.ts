@@ -7,6 +7,7 @@ export interface ITetrisState {
 	readonly numCols: number;
 	readonly cellSize: number;
 	readonly level: number;
+	readonly linesPerLevel: number;
 	readonly linesUntilNextLevel: number;
 	readonly activeBlock: IBlock | null;
 	readonly score: number;
