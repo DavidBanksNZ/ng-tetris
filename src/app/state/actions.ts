@@ -1,9 +1,7 @@
-
 import {Action} from '@ngrx/store';
+import {ActionWithPayload} from '../interfaces/actionWithPayload.interface';
 
-interface ActionWithPayload<T> extends Action {
-	payload: T;
-}
+
 
 export const RESET_SCORE = 'RESET_SCORE';
 export const INCREMENT_SCORE = 'INCREMENT_SCORE';
