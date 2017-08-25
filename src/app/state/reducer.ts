@@ -1,12 +1,15 @@
 import {ITetrisState} from './state.interface';
 import {Action} from '@ngrx/store';
-import {MOVE_ACTIVE_BLOCK_DOWN, MOVE_ACTIVE_BLOCK_LEFT, NEW_GAME, TOGGLE_PAUSE} from './actions';
+
+import {
+	MOVE_ACTIVE_BLOCK_DOWN, MOVE_ACTIVE_BLOCK_LEFT, MOVE_ACTIVE_BLOCK_RIGHT, NEW_GAME,
+	TOGGLE_PAUSE
+} from './actions';
 import {centerBlock} from '../helpers/centerBlock';
 import {generateRandomBlock} from '../helpers/generateRandomBlock';
-import {offsetBlock} from '../helpers/offsetBlock';
-import {ActionWithPayload} from '../interfaces/actionWithPayload.interface';
 import {moveActiveBlockDownMapper} from './mappers/moveActiveBlockDown';
 import {moveActiveBlockLeftMapper} from './mappers/moveActiveBlockLeft';
+import {moveActiveBlockRightMapper} from './mappers/moveActiveBlockRight';
 
 
 const INITIAL_STATE: ITetrisState = {
@@ -58,6 +61,9 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 
 		case MOVE_ACTIVE_BLOCK_LEFT:
 			return moveActiveBlockLeftMapper(state, action);
+
+		case MOVE_ACTIVE_BLOCK_RIGHT:
+			return moveActiveBlockRightMapper(state, action);
 
 		default:
 			return state;

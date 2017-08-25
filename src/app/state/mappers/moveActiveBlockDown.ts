@@ -43,7 +43,7 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 	} else {
 		const minRow = Math.min(...activeBlock.cells.map(cell => cell.row));
 		unclearedCells = [...unclearedCells, ...activeBlock.cells];
-		if (minRow > 0) {
+		if (minRow >= 0) {
 			updatedBlock = offsetBlock(centerBlock(generateRandomBlock(), state.numCols), 0, 1, numRows, numCols);
 		} else {
 			gameOver = true;
