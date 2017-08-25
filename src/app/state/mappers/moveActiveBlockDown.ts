@@ -41,8 +41,28 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 		const allTheWay = (action as ActionWithPayload<boolean>).payload;
 		updatedBlock = offsetBlock(activeBlock, 0, allTheWay ? spacesToMove : 1, numRows, numCols);
 	} else {
-		const minRow = Math.min(...activeBlock.cells.map(cell => cell.row));
+
+		let minRow = Math.min(...activeBlock.cells.map(cell => cell.row));
 		unclearedCells = [...unclearedCells, ...activeBlock.cells];
+
+		// Need to check is rows can be cleared before ending game
+		const rows = activeBlock.cells.map(cell => cell.row);
+
+		rows.forEach(row => {
+			const unclearedCellsInRow = unclearedCells.filter(cell => cell.row === row);
+			const unclearedCellsColumns = unclearedCellsInRow.map(cell => cell.column);
+			const isFullRow = unclearedCellsColumns.length === numCols;
+			if (isFullRow) {
+				// remove uncleared cells in this row, move above rows down 1
+				unclearedCells = unclearedCells
+					.filter(cell => cell.row !== row)
+					.map(cell => {
+						return cell.row < row ? {...cell, row: cell.row + 1} : cell;
+					});
+				minRow += 1;
+			}
+		});
+
 		if (minRow >= 0) {
 			updatedBlock = offsetBlock(centerBlock(generateRandomBlock(), state.numCols), 0, 1, numRows, numCols);
 		} else {
