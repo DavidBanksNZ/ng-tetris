@@ -31,6 +31,11 @@ export function offsetBlock(block: IBlock, dx: number, dy: number, numRows: numb
 			...cell,
 			row: cell.row + _dy,
 			column: cell.column + _dx
+		})),
+		unrotatedCells: block.unrotatedCells.map(cell => ({
+			...cell,
+			row: cell.row + _dy,
+			column: cell.column + _dx
 		}))
 	};
 }

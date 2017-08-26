@@ -6,4 +6,5 @@ export interface IBlock {
 	type: BlockType;
 	orientation: BlockOrientation;
 	cells: ICell[];
+	unrotatedCells: ICell[];
 }

@@ -73,7 +73,8 @@ export function generateBlock (type: BlockType): IBlock {
 	return {
 		type,
 		orientation: BlockOrientation.Normal,
-		cells
+		cells,
+		unrotatedCells: cells
 	};
 }
 

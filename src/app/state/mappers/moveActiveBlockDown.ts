@@ -1,6 +1,6 @@
-import {ITetrisState} from '../state.interface';
 import {Action} from '@ngrx/store';
 
+import {ITetrisState} from '../state.interface';
 import {ActionWithPayload} from '../../interfaces/actionWithPayload.interface';
 import {offsetBlock} from '../../helpers/offsetBlock';
 import {centerBlock} from '../../helpers/centerBlock';
@@ -11,28 +11,7 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 	const {activeBlock, numRows, numCols, linesPerLevel} = state;
 	let {unclearedCells, level, linesUntilNextLevel} = state;
 
-	let spacesToMove = numRows;
-	const columns = activeBlock.cells.map(cell => cell.column);
-	const minColumn = Math.min(...columns);
-	const maxColumn = Math.max(...columns);
-
-	for (let i = minColumn; i <= maxColumn; i++) {
-		const cellsInColumn = activeBlock.cells.filter(cell => cell.column === i);
-		const rows = cellsInColumn.map(cell => cell.row);
-		const maxRow = Math.max(...rows);
-		const unclearedCellsInColumn = unclearedCells
-			.filter(cell => cell.column === i && cell.row > maxRow);
-
-		const highestUnclearedCellRow = unclearedCellsInColumn.length > 0 ?
-			Math.min(...unclearedCellsInColumn.map(cell => cell.row)) :
-			numRows;
-
-		spacesToMove = Math.min(spacesToMove, highestUnclearedCellRow - maxRow - 1);
-
-		if (spacesToMove === 0) {
-			break;
-		}
-	}
+	const spacesToMove = calculateSpacesLeft(activeBlock, unclearedCells, numRows);
 
 	let updatedBlock;
 	let gameOver = false;
@@ -95,4 +74,31 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 		activeBlock: updatedBlock,
 		isFinished: gameOver
 	};
+}
+
+
+function calculateSpacesLeft (activeBlock, unclearedCells, numRows) {
+	let spacesToMove = numRows;
+	const columns = activeBlock.cells.map(cell => cell.column);
+	const minColumn = Math.min(...columns);
+	const maxColumn = Math.max(...columns);
+
+	for (let i = minColumn; i <= maxColumn; i++) {
+		const cellsInColumn = activeBlock.cells.filter(cell => cell.column === i);
+		const rows = cellsInColumn.map(cell => cell.row);
+		const maxRow = Math.max(...rows);
+		const unclearedCellsInColumn = unclearedCells
+			.filter(cell => cell.column === i && cell.row > maxRow);
+
+		const highestUnclearedCellRow = unclearedCellsInColumn.length > 0 ?
+			Math.min(...unclearedCellsInColumn.map(cell => cell.row)) :
+			numRows;
+
+		spacesToMove = Math.min(spacesToMove, highestUnclearedCellRow - maxRow - 1);
+
+		if (spacesToMove === 0) {
+			break;
+		}
+	}
+	return spacesToMove;
 }

@@ -6,6 +6,7 @@ export function centerBlock(block: IBlock, numCols: number): IBlock {
 	const offset = Math.floor((numCols - width) / 2);
 	return {
 		...block,
-		cells: block.cells.map(cell => ({...cell, column: cell.column + offset}))
+		cells: block.cells.map(cell => ({...cell, column: cell.column + offset})),
+		unrotatedCells: block.unrotatedCells.map(cell => ({...cell, column: cell.column + offset}))
 	};
 }

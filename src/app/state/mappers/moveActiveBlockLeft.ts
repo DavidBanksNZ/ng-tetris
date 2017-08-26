@@ -1,6 +1,6 @@
-import {ITetrisState} from '../state.interface';
 import {Action} from '@ngrx/store';
 
+import {ITetrisState} from '../state.interface';
 import {ActionWithPayload} from '../../interfaces/actionWithPayload.interface';
 import {offsetBlock} from '../../helpers/offsetBlock';
 

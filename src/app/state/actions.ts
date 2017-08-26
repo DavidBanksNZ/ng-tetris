@@ -12,6 +12,7 @@ export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const MOVE_ACTIVE_BLOCK_DOWN = 'MOVE_ACTIVE_BLOCK_DOWN';
 export const MOVE_ACTIVE_BLOCK_LEFT = 'MOVE_ACTIVE_BLOCK_LEFT';
 export const MOVE_ACTIVE_BLOCK_RIGHT = 'MOVE_ACTIVE_BLOCK_RIGHT';
+export const ROTATE_ACTIVE_BLOCK = 'ROTATE_ACTIVE_BLOCK';
 
 
 export function newGame(): Action {
@@ -32,4 +33,8 @@ export function moveActiveBlockLeft(allTheWay: boolean): ActionWithPayload<boole
 
 export function moveActiveBlockRight(allTheWay: boolean): ActionWithPayload<boolean> {
 	return {type: MOVE_ACTIVE_BLOCK_RIGHT, payload: allTheWay};
+}
+
+export function rotateActiveBlock(): Action {
+	return {type: ROTATE_ACTIVE_BLOCK};
 }
