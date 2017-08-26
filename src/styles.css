@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-	font-family: Arial, sans-serif;
+	font-family: 'Open Sans', Arial, sans-serif;
 }
 
 .app {
@@ -52,7 +52,7 @@ body {
 }
 
 .app-timer {
-	width: 185px;
+	width: 190px;
 	display: inline-block;
 	position: absolute;
 	bottom: 0;
@@ -89,7 +89,7 @@ body {
 .app-next-block-wrapper {
 	position: absolute;
 	border: 1px solid #aaa;
-	width: 185px;
+	width: 190px;
 	box-sizing: border-box;
 	padding: 1em 2em;
 	background: linear-gradient(to bottom, #f3f9ff, #ffffff);

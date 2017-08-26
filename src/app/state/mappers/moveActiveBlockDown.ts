@@ -11,12 +11,14 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 	const {numRows, numCols, linesPerLevel} = state;
 	let {unclearedCells, level, linesUntilNextLevel, nextBlock, activeBlock, isFinished} = state;
 
-	const spacesToMove = calculateSpacesLeft(activeBlock, unclearedCells, numRows);
+	let spacesToMove = calculateSpacesLeft(activeBlock, unclearedCells, numRows);
 
 	if (spacesToMove > 0) {
 		const allTheWay = (action as ActionWithPayload<boolean>).payload;
 		activeBlock = offsetBlock(activeBlock, 0, allTheWay ? spacesToMove : 1, numRows, numCols);
-	} else {
+		spacesToMove = allTheWay ? 0 : spacesToMove;
+	}
+	if (spacesToMove === 0) {
 		const rows = activeBlock.cells.map(cell => cell.row);
 		let minRow = Math.min(...rows);
 		const maxRow = Math.max(...rows);
@@ -57,7 +59,6 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 			nextBlock = generateRandomBlock();
 		} else {
 			isFinished = true;
-			nextBlock = null;
 		}
 	}
 
