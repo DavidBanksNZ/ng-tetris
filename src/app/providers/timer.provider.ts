@@ -39,7 +39,6 @@ export class TimerService {
 	}
 
 	private tick() {
-		console.log('tick');
 		this.store.dispatch(moveActiveBlockDown(false));
 	}
 }

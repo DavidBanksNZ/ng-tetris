@@ -5,12 +5,13 @@ import {
 	MOVE_ACTIVE_BLOCK_DOWN, MOVE_ACTIVE_BLOCK_LEFT, MOVE_ACTIVE_BLOCK_RIGHT, NEW_GAME,
 	ROTATE_ACTIVE_BLOCK, TOGGLE_PAUSE
 } from './actions';
-import {centerBlock} from '../helpers/centerBlock';
 import {generateRandomBlock} from '../helpers/generateRandomBlock';
 import {moveActiveBlockDownMapper} from './mappers/moveActiveBlockDown';
 import {moveActiveBlockLeftMapper} from './mappers/moveActiveBlockLeft';
 import {moveActiveBlockRightMapper} from './mappers/moveActiveBlockRight';
 import {rotateActiveBlockMapper} from './mappers/rotateActiveBlock';
+import {newGameMapper} from './mappers/newGame';
+import {togglePauseMapper} from './mappers/togglePause';
 
 
 const INITIAL_STATE: ITetrisState = {
@@ -35,10 +36,6 @@ const INITIAL_STATE: ITetrisState = {
 	interval: 0
 };
 
-// TODO: move this to helper
-function calculateInterval (level: number): number {
-	return Math.max(1, 10 - level) * 50;
-}
 
 
 export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Action) {
@@ -46,38 +43,10 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 	switch (action.type) {
 
 		case NEW_GAME:
-			return {
-				...state,
-				isStarted: true,
-				isTiming: true,
-				partial: 0,
-				timestamp: Date.now(),
-				interval: calculateInterval(1),
-				isFinished: false,
-				level: 1,
-				linesUntilNextLevel: 10,
-				score: 0,
-				totalBlocks: 0,
-				totalLinesCleared: 0,
-				unclearedCells: [],
-				activeBlock: centerBlock(state.nextBlock, state.numCols),
-				nextBlock: generateRandomBlock()
-			};
+			return newGameMapper(state, action);
 
 		case TOGGLE_PAUSE:
-			if (!state.isTiming) {
-				return {
-					...state,
-					partial: state.interval - (Date.now() - state.timestamp),
-					timestamp: Date.now(),
-					isTiming: true
-				};
-			} else {
-				return {
-					...state,
-					isTiming: false
-				};
-			}
+			return togglePauseMapper(state, action);
 
 		case MOVE_ACTIVE_BLOCK_DOWN:
 			return moveActiveBlockDownMapper(state, action);
