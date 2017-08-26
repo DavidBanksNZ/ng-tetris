@@ -9,26 +9,27 @@ import {ICell} from '../../interfaces/cell.interface';
 export function rotateActiveBlockMapper(state: ITetrisState, action: Action): ITetrisState {
 
 	let {activeBlock} = state;
-	const {unclearedCells, numCols} = state;
+	const {unclearedCells, numCols, numRows} = state;
 	const {unrotatedCells, type, orientation} = activeBlock;
 
 	let newOrientation: BlockOrientation;
 	let angle: number;
 
+	// Determine the angle to rotate by and the new orientation
 	switch (orientation) {
 		case BlockOrientation.Normal:
-			newOrientation = BlockOrientation.FlippedRight;
+			newOrientation = BlockOrientation.FlippedLeft;
 			angle = -0.5 * Math.PI;
 			break;
-		case BlockOrientation.FlippedRight:
+		case BlockOrientation.FlippedLeft:
 			newOrientation = BlockOrientation.UpsideDown;
 			angle = -1 * Math.PI;
 			break;
 		case BlockOrientation.UpsideDown:
-			newOrientation = BlockOrientation.FlippedLeft;
+			newOrientation = BlockOrientation.FlippedRight;
 			angle = -1.5 * Math.PI;
 			break;
-		case BlockOrientation.FlippedLeft:
+		case BlockOrientation.FlippedRight:
 			newOrientation = BlockOrientation.Normal;
 			angle = -2 * Math.PI;
 			break;
@@ -68,6 +69,7 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 	let cells: ICell[] = unrotatedCells.map(cell => {
 		const translatedRow = cell.row - centroid[0];
 		const translatedCol = cell.column - centroid[1];
+		// use a rounding trick to avoid tiny rounding errors causing incorrect positions
 		const row = Math.ceil(0.5 * Math.round(2 * (centroid[0] + cosAngle * translatedRow - sinAngle * translatedCol)));
 		const column = Math.floor(0.5 * Math.round(2 * (centroid[1] + sinAngle * translatedRow + cosAngle * translatedCol)));
 		return {type, row, column};
@@ -88,9 +90,11 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 	}
 
 	// check if the rotation is allowed!
+	// first check if the rotation fits along rows
 	const rows = cells.map(cell => cell.row);
 	const minRow = Math.min(...rows);
 	const maxRow = Math.max(...rows);
+	const rowSpan = maxRow - minRow + 1;
 	let isConflict = false;
 
 	for (let row = minRow; row <= maxRow; row++) {
@@ -99,13 +103,44 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 		const unclearedColumnsInRow = unclearedCells.filter(cell => cell.row === row)
 			.map(cell => cell.column);
 		const combined = colsInRow.concat(unclearedColumnsInRow);
+
 		if ((new Set(combined)).size < combined.length) {
 			isConflict = true;
 			break;
 		}
 	}
 
+	// Now check columns. Allow blocks to be offset upwards so that they fit.
+	// Maximum offset is total row span of the block.
+	let rowOffset;
+	if (!isConflict) {
+		for (rowOffset = 0; rowOffset < rowSpan; rowOffset++) {
+			for (let col = minCol; col <= maxCol; col++) {
+				const rowsInCol = cells.filter(cell => cell.column === col)
+					.map(cell => cell.row - rowOffset);
+				const unclearedRowsInColumn = unclearedCells.filter(cell => cell.column === col)
+					.map(cell => cell.row);
+				const combined = rowsInCol.concat(unclearedRowsInColumn);
+
+				if (Math.min(...rowsInCol) < 0 || Math.max(...rowsInCol) >= numRows || (new Set(combined)).size < combined.length) {
+					isConflict = true;
+					break;
+				} else {
+					isConflict = false;
+				}
+			}
+			if (!isConflict) {
+				if (rowOffset > 0) {
+					cells = cells.map(cell => ({...cell, row: cell.row - rowOffset}));
+				}
+				break;
+			}
+		}
+	}
+
+
 	if (isConflict) {
+		// Do not update state with rotated block if it cannot fit.
 		return state;
 	} else {
 		activeBlock = {

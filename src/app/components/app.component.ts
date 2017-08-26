@@ -12,27 +12,29 @@ import {
 	template: `
 		<div class="app">
 			<h1>Angular + Redux Tetris</h1>
-			<app-controls
-				(onNew)="newGame()"
-				(onPause)="togglePause()"
-				[isStarted]="(state$ | async).isStarted"
-				[isPaused]="(state$ | async).isPaused">
-			</app-controls>
-			<app-timer
-				[level]="(state$ | async).level"
-				[isStarted]="(state$ | async).isStarted"
-				[isPaused]="(state$ | async).isPaused"
-				[isFinished]="(state$ | async).isFinished"
-				[gameId]="(state$ | async).gameId"
-				(onTick)="tick()">
-			</app-timer>
-			<app-board
-				[state]="state$ | async"
-				(onMoveActiveBlockDown)="moveActiveBlockDown($event)"
-				(onMoveActiveBlockLeft)="moveActiveBlockLeft($event)"
-				(onMoveActiveBlockRight)="moveActiveBlockRight($event)"
-				(onRotateActiveBlock)="rotateActiveBlock()">
-			</app-board>
+			<div *ngIf="state$ | async as state">
+				<app-controls
+					(onNew)="newGame()"
+					(onPause)="togglePause()"
+					[isStarted]="state.isStarted"
+					[isPaused]="state.isPaused">
+				</app-controls>
+				<app-timer
+					[level]="state.level"
+					[isStarted]="state.isStarted"
+					[isPaused]="state.isPaused"
+					[isFinished]="state.isFinished"
+					[gameId]="state.gameId"
+					(onTick)="tick()">
+				</app-timer>
+				<app-board
+					[state]="state"
+					(onMoveActiveBlockDown)="moveActiveBlockDown($event)"
+					(onMoveActiveBlockLeft)="moveActiveBlockLeft($event)"
+					(onMoveActiveBlockRight)="moveActiveBlockRight($event)"
+					(onRotateActiveBlock)="rotateActiveBlock()">
+				</app-board>
+			</div>
 		</div>
 	`
 })

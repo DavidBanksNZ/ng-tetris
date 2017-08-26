@@ -28,18 +28,18 @@ export class TimerComponent implements OnChanges {
 	ngOnChanges(changes: SimpleChanges) {
 		const {level, isStarted, isFinished, isPaused, gameId} = changes;
 
-		if (gameId.currentValue !== gameId.previousValue && !gameId.isFirstChange()) {
+		if (gameId && gameId.currentValue !== gameId.previousValue && !gameId.isFirstChange()) {
 			this.partial = 0;
 			this.resetTimer(this.level);
-		} else if (isStarted.currentValue && !isStarted.previousValue) {
+		} else if (isStarted && isStarted.currentValue && !isStarted.previousValue) {
 			this.resetTimer(this.level);
-		} else if (isFinished.currentValue && !isFinished.previousValue) {
+		} else if (isFinished && isFinished.currentValue && !isFinished.previousValue) {
 			this.stopTimer();
-		} else if (isPaused.currentValue && !isPaused.previousValue) {
+		} else if (isPaused && isPaused.currentValue && !isPaused.previousValue) {
 			this.stopTimer(true);
-		} else if (!isPaused.currentValue && isPaused.previousValue) {
+		} else if (isPaused && !isPaused.currentValue && isPaused.previousValue) {
 			this.resetTimer(this.level);
-		} else if (level.currentValue !== level.previousValue && !isNaN(Number(level.previousValue))) {
+		} else if (level && level.currentValue !== level.previousValue && !isNaN(Number(level.previousValue))) {
 			this.resetTimer(level.currentValue);
 		}
 	}
