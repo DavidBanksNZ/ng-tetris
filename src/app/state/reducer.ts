@@ -22,6 +22,7 @@ const INITIAL_STATE: ITetrisState = {
 	linesPerLevel: 10,
 	linesUntilNextLevel: 10,
 	activeBlock: null,
+	nextBlock: generateRandomBlock(),
 	score: 0,
 	totalBlocks: 0,
 	totalLinesCleared: 0,
@@ -49,7 +50,8 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 				totalBlocks: 0,
 				totalLinesCleared: 0,
 				unclearedCells: [],
-				activeBlock: centerBlock(generateRandomBlock(), state.numCols)
+				activeBlock: centerBlock(state.nextBlock, state.numCols),
+				nextBlock: generateRandomBlock()
 			};
 
 		case TOGGLE_PAUSE:

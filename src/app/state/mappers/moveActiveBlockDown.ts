@@ -8,24 +8,19 @@ import {generateRandomBlock} from '../../helpers/generateRandomBlock';
 
 
 export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): ITetrisState {
-	const {activeBlock, numRows, numCols, linesPerLevel} = state;
-	let {unclearedCells, level, linesUntilNextLevel} = state;
+	const {numRows, numCols, linesPerLevel} = state;
+	let {unclearedCells, level, linesUntilNextLevel, nextBlock, activeBlock, isFinished} = state;
 
 	const spacesToMove = calculateSpacesLeft(activeBlock, unclearedCells, numRows);
 
-	let updatedBlock;
-	let gameOver = false;
-
 	if (spacesToMove > 0) {
 		const allTheWay = (action as ActionWithPayload<boolean>).payload;
-		updatedBlock = offsetBlock(activeBlock, 0, allTheWay ? spacesToMove : 1, numRows, numCols);
+		activeBlock = offsetBlock(activeBlock, 0, allTheWay ? spacesToMove : 1, numRows, numCols);
 	} else {
-
 		const rows = activeBlock.cells.map(cell => cell.row);
 		let minRow = Math.min(...rows);
 		const maxRow = Math.max(...rows);
 		unclearedCells = [...unclearedCells, ...activeBlock.cells];
-		window['cells'] = unclearedCells;
 
 		// Need to check is rows can be cleared before ending game
 		let rowsCleared = 0;
@@ -52,17 +47,17 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 			if (linesUntilNextLevel <= 0) {
 				level += 1;
 				linesUntilNextLevel = linesPerLevel;
-				// TODO update timer
 			}
-			console.log(`Level ${level}: ${linesUntilNextLevel} remaining`);
 		}
 
 		minRow += rowsCleared;
 
 		if (minRow >= 0) {
-			updatedBlock = offsetBlock(centerBlock(generateRandomBlock(), state.numCols), 0, 0, numRows, numCols);
+			activeBlock = offsetBlock(centerBlock(nextBlock, state.numCols), 0, 0, numRows, numCols);
+			nextBlock = generateRandomBlock();
 		} else {
-			gameOver = true;
+			isFinished = true;
+			nextBlock = null;
 		}
 	}
 
@@ -71,8 +66,9 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 		unclearedCells,
 		linesUntilNextLevel,
 		level,
-		activeBlock: updatedBlock,
-		isFinished: gameOver
+		activeBlock,
+		nextBlock,
+		isFinished
 	};
 }
 

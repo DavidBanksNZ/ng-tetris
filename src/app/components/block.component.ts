@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {IBlock} from '../interfaces/block.interface';
+import {ICell} from '../interfaces/cell.interface';
 
 @Component({
 	selector: 'app-block',

@@ -13,20 +13,32 @@ import {
 		<div class="app">
 			<h1>Angular + Redux Tetris</h1>
 			<div *ngIf="state$ | async as state">
+
 				<app-controls
 					(onNew)="newGame()"
 					(onPause)="togglePause()"
 					[isStarted]="state.isStarted"
 					[isPaused]="state.isPaused">
 				</app-controls>
+
+				<app-next-block
+					[block]="state.nextBlock"
+					[cellSize]="state.cellSize"
+					[boardWidth]="state.numCols * (state.cellSize - 1) + 1">
+				</app-next-block>
+
 				<app-timer
+					[boardWidth]="state.numCols * (state.cellSize - 1) + 1"
 					[level]="state.level"
+					[lines]="state.linesUntilNextLevel"
+					[score]="state.score"
 					[isStarted]="state.isStarted"
 					[isPaused]="state.isPaused"
 					[isFinished]="state.isFinished"
 					[gameId]="state.gameId"
 					(onTick)="tick()">
 				</app-timer>
+
 				<app-board
 					[state]="state"
 					(onMoveActiveBlockDown)="moveActiveBlockDown($event)"
@@ -34,6 +46,7 @@ import {
 					(onMoveActiveBlockRight)="moveActiveBlockRight($event)"
 					(onRotateActiveBlock)="rotateActiveBlock()">
 				</app-board>
+
 			</div>
 		</div>
 	`
@@ -41,7 +54,6 @@ import {
 export class AppComponent {
 
 	public state$: Observable<ITetrisState>;
-	private timer: any;
 
 	constructor(private store: Store<IStore>) {
 		this.state$ = store.select(state => state.tetris);

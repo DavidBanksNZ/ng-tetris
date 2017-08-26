@@ -3,11 +3,16 @@ body {
 	font-family: Arial, sans-serif;
 }
 
+.app {
+	position: relative;
+}
+
 .app-board {
 	position: relative;
 	border: 2px solid #aaa;
 	box-sizing: content-box;
 	overflow: hidden;
+	background: linear-gradient(to bottom, #f3f9ff, #ffffff);
 }
 
 .app-cell {
@@ -44,4 +49,60 @@ body {
 
 .app-cell-long {
 	background-color: #ff6600;
+}
+
+.app-timer {
+	width: 185px;
+	display: inline-block;
+	position: absolute;
+	bottom: 0;
+}
+
+.app-timer-box {
+	padding: 1em 2em;
+	border: 1px solid #aaaaaa;
+	margin-top: 1em;
+	box-sizing: border-box;
+	text-align: right;
+	background: linear-gradient(to bottom, #f3f9ff, #ffffff);
+}
+.app-timer-box-value {
+	font-size: 2.5em;
+}
+
+.app-timer-box-label {
+	font-size: 0.8em;
+	color: #777;
+}
+.app-timer-box-score .app-timer-box-value {
+	color: #3a9566;
+}
+
+.app-timer-box-level .app-timer-box-value {
+	color: #e7598f;
+}
+
+.app-timer-box-lines .app-timer-box-value {
+	color: #888;
+}
+
+.app-next-block-wrapper {
+	position: absolute;
+	border: 1px solid #aaa;
+	width: 185px;
+	box-sizing: border-box;
+	padding: 1em 2em;
+	background: linear-gradient(to bottom, #f3f9ff, #ffffff);
+}
+.app-next-block {
+	overflow: hidden;
+	margin: 1em auto;
+	position: relative;
+	opacity: 0.66;
+}
+
+.app-next-block-label {
+	text-align: center;
+	color: #777;
+	font-size: 0.8em;
 }

@@ -4,14 +4,28 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Outp
 	selector: 'app-timer',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="app-timer">
-			{{isFinished ? 'Game over!' : ''}}
+		<div class="app-timer" [style.left]="(boardWidth + 20) + 'px'">
+			<div class="app-timer-box app-timer-box-score">
+				<div class="app-timer-box-label">Score</div>
+				<div class="app-timer-box-value">{{score}}</div>
+			</div>
+			<div class="app-timer-box app-timer-box-level">
+				<div class="app-timer-box-label">Level</div>
+				<div class="app-timer-box-value">{{level}}</div>
+			</div>
+			<div class="app-timer-box app-timer-box-lines">
+				<div class="app-timer-box-label">Lines until next level</div>
+				<div class="app-timer-box-value">{{lines}}</div>
+			</div>
 		</div>
 	`
 })
 
 export class TimerComponent implements OnChanges {
 
+	@Input() boardWidth: number;
+	@Input() lines: number;
+	@Input() score: number;
 	@Input() level: number;
 	@Input() isStarted: boolean;
 	@Input() isFinished: boolean;

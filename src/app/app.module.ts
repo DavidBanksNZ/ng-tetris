@@ -9,6 +9,7 @@ import {CellComponent} from './components/cell.component';
 import {BlockComponent} from './components/block.component';
 import {ControlsComponent} from './components/controls.component';
 import {TimerComponent} from './components/app-timer.component';
+import {NextBlockComponent} from './components/next-block.component';
 
 @NgModule({
 	declarations: [
@@ -17,7 +18,8 @@ import {TimerComponent} from './components/app-timer.component';
 		CellComponent,
 		BlockComponent,
 		ControlsComponent,
-		TimerComponent
+		TimerComponent,
+		NextBlockComponent
 	],
 	imports: [
 		BrowserModule,

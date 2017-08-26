@@ -10,6 +10,7 @@ export interface ITetrisState {
 	readonly linesPerLevel: number;
 	readonly linesUntilNextLevel: number;
 	readonly activeBlock: IBlock | null;
+	readonly nextBlock: IBlock | null;
 	readonly score: number;
 	readonly totalBlocks: number;
 	readonly totalLinesCleared: number;
