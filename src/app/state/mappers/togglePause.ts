@@ -4,11 +4,9 @@ import {ITetrisState} from '../state.interface';
 export function togglePauseMapper(state: ITetrisState, action: Action): ITetrisState {
 	if (state.isTiming) {
 		// Now pausing
-		const timestamp = Date.now();
 		return {
 			...state,
-			partial: (state.partial || state.interval) - (timestamp - state.timestamp),
-			// timestamp,
+			partialInterval: (state.partialInterval || state.interval) - (Date.now() - state.timestamp),
 			isTiming: false
 		};
 	} else {

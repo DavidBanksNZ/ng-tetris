@@ -31,9 +31,9 @@ const INITIAL_STATE: ITetrisState = {
 	isFinished: false,
 
 	isTiming: false,
-	partial: 0,
 	timestamp: 0,
-	interval: 0
+	interval: 0,
+	partialInterval: 0
 };
 
 

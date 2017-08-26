@@ -1,11 +1,6 @@
 import {Action} from '@ngrx/store';
 import {ActionWithPayload} from '../interfaces/actionWithPayload.interface';
 
-
-
-export const RESET_SCORE = 'RESET_SCORE';
-export const INCREMENT_SCORE = 'INCREMENT_SCORE';
-
 export const NEW_GAME = 'NEW_GAME';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 

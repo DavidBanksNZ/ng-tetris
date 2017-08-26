@@ -67,7 +67,7 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 		unclearedCells,
 		linesUntilNextLevel,
 		level,
-		partial: 0,
+		partialInterval: 0,
 		timestamp: Date.now(),
 		activeBlock,
 		nextBlock,

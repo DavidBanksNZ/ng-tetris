@@ -20,13 +20,13 @@ export class TimerService {
 		const [isTiming$, isNotTiming$] = this.store.select(state => state.tetris.isTiming)
 			.partition(value => value);
 
-		const partial$ = this.store.select(state => state.tetris.partial);
+		const partialInterval$ = this.store.select(state => state.tetris.partialInterval);
 		const interval$ = this.store.select(state => state.tetris.interval);
 
 		isTiming$
-			.withLatestFrom(partial$, interval$)
-			.switchMap(([isTiming, partial, interval]) => {
-				return Observable.timer(partial, interval).takeUntil(isNotTiming$);
+			.withLatestFrom(partialInterval$, interval$)
+			.switchMap(([isTiming, partialInterval, interval]) => {
+				return Observable.timer(partialInterval, interval).takeUntil(isNotTiming$);
 			})
 			.subscribe(() => {
 				this.store.dispatch(moveActiveBlockDown(false));

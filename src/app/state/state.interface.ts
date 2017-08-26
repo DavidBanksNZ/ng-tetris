@@ -17,10 +17,10 @@ export interface ITetrisState {
 	readonly isStarted: boolean;
 	readonly isFinished: boolean;
 
-	readonly partial: number;
 	readonly timestamp: number;
 	readonly isTiming: boolean;
 	readonly interval: number;
+	readonly partialInterval: number;
 }
 
 export interface IStore {
