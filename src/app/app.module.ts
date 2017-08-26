@@ -8,8 +8,9 @@ import {tetrisReducer} from './state/reducer';
 import {CellComponent} from './components/cell.component';
 import {BlockComponent} from './components/block.component';
 import {ControlsComponent} from './components/controls.component';
-import {TimerComponent} from './components/app-timer.component';
+import {TimerComponent} from './components/scoreboard.component';
 import {NextBlockComponent} from './components/next-block.component';
+import {TimerService} from './providers/timer.provider';
 
 @NgModule({
 	declarations: [
@@ -25,7 +26,7 @@ import {NextBlockComponent} from './components/next-block.component';
 		BrowserModule,
 		StoreModule.forRoot({tetris: tetrisReducer})
 	],
-	providers: [],
+	providers: [TimerService],
 	bootstrap: [AppComponent]
 })
 export class AppModule {

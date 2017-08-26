@@ -2,7 +2,6 @@ import {ICell} from '../interfaces/cell.interface';
 import {IBlock} from '../interfaces/block.interface';
 
 export interface ITetrisState {
-	readonly gameId: number;
 	readonly numRows: number;
 	readonly numCols: number;
 	readonly cellSize: number;
@@ -17,7 +16,11 @@ export interface ITetrisState {
 	readonly unclearedCells: ICell[];
 	readonly isStarted: boolean;
 	readonly isFinished: boolean;
-	readonly isPaused: boolean;
+
+	readonly partial: number;
+	readonly timestamp: number;
+	readonly isTiming: boolean;
+	readonly interval: number;
 }
 
 export interface IStore {

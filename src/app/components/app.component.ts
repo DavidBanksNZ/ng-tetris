@@ -6,6 +6,7 @@ import {
 	moveActiveBlockDown, moveActiveBlockLeft, moveActiveBlockRight, newGame, rotateActiveBlock,
 	togglePause
 } from '../state/actions';
+import {TimerService} from '../providers/timer.provider';
 
 @Component({
 	selector: 'app-root',
@@ -18,7 +19,8 @@ import {
 					(onNew)="newGame()"
 					(onPause)="togglePause()"
 					[isStarted]="state.isStarted"
-					[isPaused]="state.isPaused">
+					[isFinished]="state.isFinished"
+					[isTiming]="state.isTiming">
 				</app-controls>
 
 				<app-next-block
@@ -27,17 +29,12 @@ import {
 					[boardWidth]="state.numCols * (state.cellSize - 1) + 1">
 				</app-next-block>
 
-				<app-timer
+				<app-scoreboard
 					[boardWidth]="state.numCols * (state.cellSize - 1) + 1"
 					[level]="state.level"
 					[lines]="state.linesUntilNextLevel"
-					[score]="state.score"
-					[isStarted]="state.isStarted"
-					[isPaused]="state.isPaused"
-					[isFinished]="state.isFinished"
-					[gameId]="state.gameId"
-					(onTick)="tick()">
-				</app-timer>
+					[score]="state.score">
+				</app-scoreboard>
 
 				<app-board
 					[state]="state"
@@ -55,8 +52,9 @@ export class AppComponent {
 
 	public state$: Observable<ITetrisState>;
 
-	constructor(private store: Store<IStore>) {
+	constructor(private store: Store<IStore>, private timer: TimerService) {
 		this.state$ = store.select(state => state.tetris);
+		this.timer.init();
 	}
 
 	public newGame(): void {

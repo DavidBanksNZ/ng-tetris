@@ -51,14 +51,14 @@ body {
 	background-color: #ff6600;
 }
 
-.app-timer {
+.app-scoreboard {
 	width: 190px;
 	display: inline-block;
 	position: absolute;
 	bottom: 0;
 }
 
-.app-timer-box {
+.app-scoreboard-box {
 	padding: 1em 2em;
 	border: 1px solid #aaaaaa;
 	margin-top: 1em;
@@ -66,23 +66,23 @@ body {
 	text-align: right;
 	background: linear-gradient(to bottom, #f3f9ff, #ffffff);
 }
-.app-timer-box-value {
+.app-scoreboard-box-value {
 	font-size: 2.5em;
 }
 
-.app-timer-box-label {
+.app-scoreboard-box-label {
 	font-size: 0.8em;
 	color: #777;
 }
-.app-timer-box-score .app-timer-box-value {
+.app-scoreboard-box-score .app-scoreboard-box-value {
 	color: #3a9566;
 }
 
-.app-timer-box-level .app-timer-box-value {
+.app-scoreboard-box-level .app-scoreboard-box-value {
 	color: #e7598f;
 }
 
-.app-timer-box-lines .app-timer-box-value {
+.app-scoreboard-box-lines .app-scoreboard-box-value {
 	color: #888;
 }
 

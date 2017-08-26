@@ -30,7 +30,7 @@ export class BoardComponent {
 
 	@HostListener('document:keydown', ['$event'])
 	onKeyUp($event) {
-		if (this.state.isStarted && !this.state.isPaused && !this.state.isFinished) {
+		if (this.state.isStarted && !this.state.isFinished && this.state.isTiming) {
 			switch ($event.keyCode) {
 				case 37:
 					this.onMoveActiveBlockLeft.emit($event.shiftKey);

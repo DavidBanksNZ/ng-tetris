@@ -14,7 +14,6 @@ import {rotateActiveBlockMapper} from './mappers/rotateActiveBlock';
 
 
 const INITIAL_STATE: ITetrisState = {
-	gameId: 0,
 	numRows: 20,
 	numCols: 10,
 	cellSize: 36,
@@ -29,8 +28,17 @@ const INITIAL_STATE: ITetrisState = {
 	unclearedCells: [],
 	isStarted: false,
 	isFinished: false,
-	isPaused: false
+
+	isTiming: false,
+	partial: 0,
+	timestamp: 0,
+	interval: 0
 };
+
+// TODO: move this to helper
+function calculateInterval (level: number): number {
+	return Math.max(1, 10 - level) * 50;
+}
 
 
 export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Action) {
@@ -40,9 +48,11 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 		case NEW_GAME:
 			return {
 				...state,
-				gameId: Date.now(),
 				isStarted: true,
-				isPaused: false,
+				isTiming: true,
+				partial: 0,
+				timestamp: Date.now(),
+				interval: calculateInterval(1),
 				isFinished: false,
 				level: 1,
 				linesUntilNextLevel: 10,
@@ -55,10 +65,19 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 			};
 
 		case TOGGLE_PAUSE:
-			return {
-				...state,
-				isPaused: !state.isPaused
-			};
+			if (!state.isTiming) {
+				return {
+					...state,
+					partial: state.interval - (Date.now() - state.timestamp),
+					timestamp: Date.now(),
+					isTiming: true
+				};
+			} else {
+				return {
+					...state,
+					isTiming: false
+				};
+			}
 
 		case MOVE_ACTIVE_BLOCK_DOWN:
 			return moveActiveBlockDownMapper(state, action);
