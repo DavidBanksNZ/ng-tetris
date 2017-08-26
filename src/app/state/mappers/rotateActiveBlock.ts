@@ -44,36 +44,10 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 		return {...state, activeBlock: {...activeBlock, orientation: newOrientation}};
 	}
 
-	let centroid: number[];
-
-	switch (type) {
-		case BlockType.Long:
-			centroid = [unrotatedCells[1].row + 0.5, unrotatedCells[1].column];
-			break;
-		case BlockType.ZigZag:
-		case BlockType.ReverseZigZag:
-			centroid = [unrotatedCells[1].row, unrotatedCells[1].column + 0.5];
-			break;
-		case BlockType.Pyramid:
-		case BlockType.L:
-		case BlockType.ReverseL:
-		default:
-			centroid = [unrotatedCells[1].row, unrotatedCells[1].column];
-			break;
-	}
+	const centroid = getCentroid(unrotatedCells, type);
 
 	// Now do the rotation
-	const cosAngle = Math.cos(angle);
-	const sinAngle = Math.sin(angle);
-
-	let cells: ICell[] = unrotatedCells.map(cell => {
-		const translatedRow = cell.row - centroid[0];
-		const translatedCol = cell.column - centroid[1];
-		// use a rounding trick to avoid tiny rounding errors causing incorrect positions
-		const row = Math.ceil(0.5 * Math.round(2 * (centroid[0] + cosAngle * translatedRow - sinAngle * translatedCol)));
-		const column = Math.floor(0.5 * Math.round(2 * (centroid[1] + sinAngle * translatedRow + cosAngle * translatedCol)));
-		return {type, row, column};
-	});
+	let cells: ICell[] = rotate(unrotatedCells, angle, centroid);
 
 	// make sure rotated block not outside bounds
 	const cols = cells.map(cell => cell.column);
@@ -142,18 +116,49 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 	if (isConflict) {
 		// Do not update state with rotated block if it cannot fit.
 		return state;
-	} else {
-		activeBlock = {
-			orientation: newOrientation,
-			type,
-			unrotatedCells,
-			cells
-		};
-
-		return {
-			...state,
-			activeBlock
-		};
 	}
 
+	activeBlock = {
+		orientation: newOrientation,
+		type,
+		unrotatedCells,
+		cells
+	};
+
+	return {
+		...state,
+		activeBlock
+	};
+
+}
+
+
+function rotate(cells: ICell[], angle: number, centroid: number[]): ICell[] {
+	const cosAngle = Math.cos(angle);
+	const sinAngle = Math.sin(angle);
+
+	return cells.map(cell => {
+		const translatedRow = cell.row - centroid[0];
+		const translatedCol = cell.column - centroid[1];
+		// use a rounding trick to avoid tiny rounding errors causing incorrect positions
+		const row = Math.ceil(0.5 * Math.round(2 * (centroid[0] + cosAngle * translatedRow - sinAngle * translatedCol)));
+		const column = Math.floor(0.5 * Math.round(2 * (centroid[1] + sinAngle * translatedRow + cosAngle * translatedCol)));
+		return {type: cell.type, row, column};
+	});
+}
+
+
+function getCentroid(cells: ICell[], blockType: BlockType): number[] {
+	switch (blockType) {
+		case BlockType.Long:
+			return [cells[1].row + 0.5, cells[1].column];
+		case BlockType.ZigZag:
+		case BlockType.ReverseZigZag:
+			return [cells[1].row, cells[1].column + 0.5];
+		case BlockType.Pyramid:
+		case BlockType.L:
+		case BlockType.ReverseL:
+		default:
+			return [cells[1].row, cells[1].column];
+	}
 }
