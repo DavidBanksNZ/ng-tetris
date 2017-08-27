@@ -16,7 +16,7 @@ export function newGameMapper(state: ITetrisState, action: Action): ITetrisState
 		interval: calculateInterval(1),
 		isFinished: false,
 		level: 1,
-		linesUntilNextLevel: 10,
+		linesUntilNextLevel: state.linesPerLevel,
 		score: 0,
 		totalBlocks: 0,
 		totalLinesCleared: 0,

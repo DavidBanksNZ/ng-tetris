@@ -5,6 +5,7 @@ import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/partition';
+import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/takeUntil';
 
 import {IStore} from '../state/state.interface';
@@ -24,13 +25,16 @@ export class TimerService {
 		const interval$ = this.store.select(state => state.tetris.interval);
 
 		isTiming$
-			.withLatestFrom(partialInterval$, interval$)
-			.switchMap(([isTiming, partialInterval, interval]) => {
-				return Observable.timer(partialInterval, interval).takeUntil(isNotTiming$);
+			.combineLatest(interval$, (isTiming, interval) => interval)
+			.withLatestFrom(partialInterval$)
+			.switchMap(([interval, partialInterval]) => {
+				return Observable.timer(partialInterval, interval)
+					.takeUntil(isNotTiming$);
 			})
 			.subscribe(() => {
 				this.store.dispatch(moveActiveBlockDown(true));
 			});
+
 	}
 
 }
