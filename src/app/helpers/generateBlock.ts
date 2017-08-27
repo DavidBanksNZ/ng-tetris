@@ -14,7 +14,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-2, 0, type),
 				generateCell(-2, 1, type),
 				generateCell(-1, 0, type),
-				generateCell(-1, 1, type),
+				generateCell(-1, 1, type)
 			];
 			break;
 		case BlockType.Pyramid:
@@ -22,7 +22,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-1, 0, type),
 				generateCell(-1, 1, type),
 				generateCell(-1, 2, type),
-				generateCell(-2, 1, type),
+				generateCell(-2, 1, type)
 			];
 			break;
 		case BlockType.Long:
@@ -30,7 +30,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-4, 0, type),
 				generateCell(-3, 0, type),
 				generateCell(-2, 0, type),
-				generateCell(-1, 0, type),
+				generateCell(-1, 0, type)
 			];
 			break;
 		case BlockType.L:
@@ -38,7 +38,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-3, 0, type),
 				generateCell(-2, 0, type),
 				generateCell(-1, 0, type),
-				generateCell(-1, 1, type),
+				generateCell(-1, 1, type)
 			];
 			break;
 		case BlockType.ReverseL:
@@ -46,7 +46,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-3, 1, type),
 				generateCell(-2, 1, type),
 				generateCell(-1, 1, type),
-				generateCell(-1, 0, type),
+				generateCell(-1, 0, type)
 			];
 			break;
 		case BlockType.ZigZag:
@@ -54,7 +54,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-1, 0, type),
 				generateCell(-2, 0, type),
 				generateCell(-2, 1, type),
-				generateCell(-3, 1, type),
+				generateCell(-3, 1, type)
 			];
 			break;
 		case BlockType.ReverseZigZag:
@@ -62,7 +62,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-3, 0, type),
 				generateCell(-2, 0, type),
 				generateCell(-2, 1, type),
-				generateCell(-1, 1, type),
+				generateCell(-1, 1, type)
 			];
 			break;
 		default:

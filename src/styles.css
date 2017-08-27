@@ -73,6 +73,7 @@ h1 {
 }
 
 .app-scoreboard {
+	width: 100%;
 	display: inline-block;
 	bottom: 0;
 }
@@ -133,6 +134,7 @@ h1 {
 	font-size: 0.8em;
 	margin-bottom: 1em;
 	outline: 0;
+	display: block;
 }
 
 .app-controls button:disabled {
