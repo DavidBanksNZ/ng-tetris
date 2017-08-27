@@ -27,9 +27,23 @@ export class BoardComponent {
 	@Output() onMoveActiveBlockRight = new EventEmitter<boolean>();
 	@Output() onMoveActiveBlockDown = new EventEmitter<boolean>();
 	@Output() onRotateActiveBlock = new EventEmitter<void>();
+	@Output() onTogglePause = new EventEmitter<void>();
+	@Output() onNewGame = new EventEmitter<void>();
 
 	@HostListener('document:keydown', ['$event'])
 	onKeyUp($event) {
+		if ($event.keyCode === 78) {
+			// N - new game
+			this.onNewGame.emit();
+			return;
+		}
+
+		if ($event.keyCode === 80 && this.state.isStarted && !this.state.isFinished) {
+			// P - toggle pause
+			this.onTogglePause.emit();
+			return;
+		}
+
 		if (this.state.isStarted && !this.state.isFinished && this.state.isTiming) {
 			switch ($event.keyCode) {
 				case 37:

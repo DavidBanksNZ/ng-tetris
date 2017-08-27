@@ -42,6 +42,8 @@ import {TimerService} from '../providers/timer.provider';
 					(onMoveActiveBlockDown)="moveActiveBlockDown($event)"
 					(onMoveActiveBlockLeft)="moveActiveBlockLeft($event)"
 					(onMoveActiveBlockRight)="moveActiveBlockRight($event)"
+					(onTogglePause)="togglePause()"
+					(onNewGame)="newGame()"
 					(onRotateActiveBlock)="rotateActiveBlock()">
 				</app-board>
 
