@@ -30,7 +30,6 @@ h1 {
 }
 
 .app-side-panel {
-	width: 190px;
 	margin-left: 20px;
 	display: flex;
 	flex-direction: column;
