@@ -64,7 +64,7 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 	}
 
 	// check if the rotation is allowed!
-	// first check if the rotation fits along rows
+	// first check if the rotation works horizontally
 	const rows = cells.map(cell => cell.row);
 	const minRow = Math.min(...rows);
 	const maxRow = Math.max(...rows);
@@ -84,7 +84,7 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 		}
 	}
 
-	// Now check columns. Allow blocks to be offset upwards so that they fit.
+	// Now check rotation works vertically. Allow blocks to be offset upwards so that they fit.
 	// Maximum offset is total row span of the block.
 	let rowOffset;
 	if (!isConflict) {
@@ -96,7 +96,7 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 					.map(cell => cell.row);
 				const combined = rowsInCol.concat(unclearedRowsInColumn);
 
-				if (Math.min(...rowsInCol) < 0 || Math.max(...rowsInCol) >= numRows || (new Set(combined)).size < combined.length) {
+				if (Math.max(...rowsInCol) >= numRows || (new Set(combined)).size < combined.length) {
 					isConflict = true;
 					break;
 				} else {
