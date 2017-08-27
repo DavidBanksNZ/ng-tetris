@@ -46,7 +46,7 @@ h1 {
 }
 
 .app-cell-pyramid {
-	background-color: hsl(57, 100%, 70%);
+	background-color: hsl(59, 100%, 70%);
 }
 
 .app-cell-square {
@@ -54,7 +54,7 @@ h1 {
 }
 
 .app-cell-zig-zag {
-	background-color: hsl(190, 100%, 70%);
+	background-color: hsl(188, 100%, 70%);
 }
 
 .app-cell-reverse-zig-zag {
@@ -66,11 +66,11 @@ h1 {
 }
 
 .app-cell-reverse-l {
-	background-color: hsl(273, 100%, 70%);
+	background-color: hsl(278, 100%, 70%);
 }
 
 .app-cell-long {
-	background-color: hsl(27, 100%, 70%);
+	background-color: hsl(28, 100%, 70%);
 }
 
 .app-scoreboard {
