@@ -28,6 +28,10 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 		spacesToMove = allTheWay ? 0 : spacesToMove;
 	}
 	if (spacesToMove === 0) {
+
+		// Block has landed. Increase score by number of cells in block.
+		score += activeBlock.cells.length;
+
 		const rows = activeBlock.cells.map(cell => cell.row);
 		let minRow = Math.min(...rows);
 		const maxRow = Math.max(...rows);

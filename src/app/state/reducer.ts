@@ -18,7 +18,7 @@ const INITIAL_STATE: ITetrisState = {
 	numRows: 20,
 	numCols: 10,
 	cellSize: 36,
-	level: 0,
+	level: 1,
 	linesPerLevel: 10,
 	linesUntilNextLevel: 10,
 	activeBlock: null,
