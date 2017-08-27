@@ -18,8 +18,8 @@ export function togglePause(): Action {
 	return {type: TOGGLE_PAUSE};
 }
 
-export function moveActiveBlockDown(allTheWay: boolean): ActionWithPayload<boolean> {
-	return {type: MOVE_ACTIVE_BLOCK_DOWN, payload: allTheWay};
+export function moveActiveBlockDown(isAuto: boolean, allTheWay: boolean = false): ActionWithPayload<{isAuto: boolean, allTheWay: boolean}> {
+	return {type: MOVE_ACTIVE_BLOCK_DOWN, payload: {isAuto, allTheWay}};
 }
 
 export function moveActiveBlockLeft(allTheWay: boolean): ActionWithPayload<boolean> {

@@ -8,13 +8,21 @@ import {generateRandomBlock} from '../../helpers/generateRandomBlock';
 
 
 export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): ITetrisState {
+
+	const {payload} = (action as ActionWithPayload<{isAuto: boolean, allTheWay: boolean}>);
+	const {allTheWay, isAuto} = payload;
+
 	const {numRows, numCols, linesPerLevel} = state;
-	let {unclearedCells, level, linesUntilNextLevel, nextBlock, activeBlock, isFinished} = state;
+	let {unclearedCells, level, linesUntilNextLevel, nextBlock, activeBlock, isFinished, score} = state;
 
 	let spacesToMove = calculateSpacesLeft(activeBlock, unclearedCells, numRows);
 
 	if (spacesToMove > 0) {
-		const allTheWay = (action as ActionWithPayload<boolean>).payload;
+
+		if (!isAuto) {
+			score += (allTheWay ? spacesToMove * 2 : 1);
+		}
+
 		activeBlock = offsetBlock(activeBlock, 0, allTheWay ? spacesToMove : 1, numRows, numCols);
 		spacesToMove = allTheWay ? 0 : spacesToMove;
 	}
@@ -26,6 +34,7 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 
 		// Need to check is rows can be cleared before ending game
 		let rowsCleared = 0;
+		let ptsScored = 0;
 
 		// low-high order is very important in this loop, since lower rows may change each iteration.
 		for (let row = Math.max(0, minRow); row <= maxRow; row++) {
@@ -39,17 +48,23 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 						return cell.row < row ? {...cell, row: cell.row + 1} : cell;
 					});
 				rowsCleared += 1;
+
+				// More points the higher up the row is
+				ptsScored += (10 + numRows - row - 1);
+
 			}
 		}
 
 		if (rowsCleared > 0) {
 			linesUntilNextLevel -= rowsCleared;
 
-			// TODO - update score
 			if (linesUntilNextLevel <= 0) {
 				level += 1;
 				linesUntilNextLevel = linesPerLevel;
 			}
+
+			// Give a multiplier for multiple rows cleared
+			score += ptsScored * rowsCleared;
 		}
 
 		minRow += rowsCleared;
@@ -72,7 +87,8 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 		activeBlock,
 		nextBlock,
 		isFinished,
-		isTiming: !isFinished
+		isTiming: !isFinished,
+		score
 	};
 }
 

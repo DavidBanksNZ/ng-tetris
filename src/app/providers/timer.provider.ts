@@ -29,7 +29,7 @@ export class TimerService {
 				return Observable.timer(partialInterval, interval).takeUntil(isNotTiming$);
 			})
 			.subscribe(() => {
-				this.store.dispatch(moveActiveBlockDown(false));
+				this.store.dispatch(moveActiveBlockDown(true));
 			});
 	}
 

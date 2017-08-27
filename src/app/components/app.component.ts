@@ -1,11 +1,12 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {IStore, ITetrisState} from '../state/state.interface';
 import {Observable} from 'rxjs/Observable';
+
 import {
 	moveActiveBlockDown, moveActiveBlockLeft, moveActiveBlockRight, newGame, rotateActiveBlock,
 	togglePause
 } from '../state/actions';
+import {IStore, ITetrisState} from '../state/state.interface';
 import {TimerService} from '../providers/timer.provider';
 
 @Component({
@@ -48,12 +49,15 @@ import {TimerService} from '../providers/timer.provider';
 		</div>
 	`
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
 
 	public state$: Observable<ITetrisState>;
 
 	constructor(private store: Store<IStore>, private timer: TimerService) {
 		this.state$ = store.select(state => state.tetris);
+	}
+
+	ngAfterViewInit() {
 		this.timer.init();
 	}
 
@@ -65,12 +69,8 @@ export class AppComponent {
 		this.store.dispatch(togglePause());
 	}
 
-	public tick(): void {
-		this.store.dispatch(moveActiveBlockDown(false));
-	}
-
 	public moveActiveBlockDown(allTheWay: boolean): void {
-		this.store.dispatch(moveActiveBlockDown(allTheWay));
+		this.store.dispatch(moveActiveBlockDown(false, allTheWay));
 	}
 
 	public moveActiveBlockLeft(allTheWay: boolean): void {

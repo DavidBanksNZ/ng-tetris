@@ -11,7 +11,7 @@ export function newGameMapper(state: ITetrisState, action: Action): ITetrisState
 		...state,
 		isStarted: true,
 		isTiming: true,
-		partial: 0,
+		partialInterval: 0,
 		timestamp: Date.now(),
 		interval: calculateInterval(1),
 		isFinished: false,
