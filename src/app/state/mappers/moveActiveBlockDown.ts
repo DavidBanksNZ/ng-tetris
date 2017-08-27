@@ -5,6 +5,7 @@ import {ActionWithPayload} from '../../interfaces/actionWithPayload.interface';
 import {offsetBlock} from '../../helpers/offsetBlock';
 import {centerBlock} from '../../helpers/centerBlock';
 import {generateRandomBlock} from '../../helpers/generateRandomBlock';
+import {calculateInterval} from '../../helpers/calculateInterval';
 
 
 export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): ITetrisState {
@@ -82,6 +83,7 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 		unclearedCells,
 		linesUntilNextLevel,
 		level,
+		interval: calculateInterval(level),
 		partialInterval: 0,
 		timestamp: Date.now(),
 		activeBlock,
