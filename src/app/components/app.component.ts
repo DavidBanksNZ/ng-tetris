@@ -14,28 +14,7 @@ import {TimerService} from '../providers/timer.provider';
 	template: `
 		<div class="app">
 			<h1>Angular + Redux Tetris</h1>
-			<div *ngIf="state$ | async as state">
-
-				<app-controls
-					(onNew)="newGame()"
-					(onPause)="togglePause()"
-					[isStarted]="state.isStarted"
-					[isFinished]="state.isFinished"
-					[isTiming]="state.isTiming">
-				</app-controls>
-
-				<app-next-block
-					[block]="state.nextBlock"
-					[cellSize]="state.cellSize"
-					[boardWidth]="state.numCols * (state.cellSize - 1) + 1">
-				</app-next-block>
-
-				<app-scoreboard
-					[boardWidth]="state.numCols * (state.cellSize - 1) + 1"
-					[level]="state.level"
-					[lines]="state.linesUntilNextLevel"
-					[score]="state.score">
-				</app-scoreboard>
+			<div *ngIf="state$ | async as state" class="app-container">
 
 				<app-board
 					[state]="state"
@@ -46,6 +25,27 @@ import {TimerService} from '../providers/timer.provider';
 					(onNewGame)="newGame()"
 					(onRotateActiveBlock)="rotateActiveBlock()">
 				</app-board>
+
+				<div class="app-side-panel">
+					<app-controls
+						(onNew)="newGame()"
+						(onPause)="togglePause()"
+						[isStarted]="state.isStarted"
+						[isFinished]="state.isFinished"
+						[isTiming]="state.isTiming">
+					</app-controls>
+
+					<app-next-block
+						[block]="state.nextBlock"
+						[cellSize]="state.cellSize">
+					</app-next-block>
+
+					<app-scoreboard
+						[level]="state.level"
+						[lines]="state.linesUntilNextLevel"
+						[score]="state.score">
+					</app-scoreboard>
+				</div>
 
 			</div>
 		</div>

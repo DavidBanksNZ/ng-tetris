@@ -1,18 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
 body {
 	font-family: 'Open Sans', Arial, sans-serif;
+	text-align: center;
+	margin: 0;
+}
+
+h1 {
+	font-size: 2.5em;
 }
 
 .app {
+	margin: auto;
+	color: #333;
+	display: inline-block;
+}
+
+.app-container {
 	position: relative;
+	display: flex;
+	flex-direction: row;
 }
 
 .app-board {
 	position: relative;
-	border: 2px solid #aaa;
+	border: 1px solid #aaa;
 	box-sizing: content-box;
 	overflow: hidden;
 	background: linear-gradient(to bottom, #f3f9ff, #ffffff);
+}
+
+.app-side-panel {
+	width: 190px;
+	margin-left: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .app-cell {
@@ -24,37 +46,35 @@ body {
 }
 
 .app-cell-pyramid {
-	background-color: yellow;
+	background-color: hsl(57, 100%, 70%);
 }
 
 .app-cell-square {
-	background-color: red;
+	background-color: hsl(0, 100%, 70%);
 }
 
 .app-cell-zig-zag {
-	background-color: #87cfe9;
+	background-color: hsl(190, 100%, 70%);
 }
 
 .app-cell-reverse-zig-zag {
-	background-color: #66ff99;
+	background-color: hsl(135, 100%, 70%);
 }
 
 .app-cell-l {
-	background-color: #2244cc;
+	background-color: hsl(223, 100%, 70%);
 }
 
 .app-cell-reverse-l {
-	background-color: #992299;
+	background-color: hsl(273, 100%, 70%);
 }
 
 .app-cell-long {
-	background-color: #ff6600;
+	background-color: hsl(27, 100%, 70%);
 }
 
 .app-scoreboard {
-	width: 190px;
 	display: inline-block;
-	position: absolute;
 	bottom: 0;
 }
 
@@ -63,7 +83,7 @@ body {
 	border: 1px solid #aaaaaa;
 	margin-top: 1em;
 	box-sizing: border-box;
-	text-align: right;
+	text-align: center;
 	background: linear-gradient(to bottom, #f3f9ff, #ffffff);
 }
 .app-scoreboard-box-value {
@@ -75,7 +95,7 @@ body {
 	color: #777;
 }
 .app-scoreboard-box-score .app-scoreboard-box-value {
-	color: #3a9566;
+	color: #2338bc;
 }
 
 .app-scoreboard-box-level .app-scoreboard-box-value {
@@ -87,9 +107,7 @@ body {
 }
 
 .app-next-block-wrapper {
-	position: absolute;
 	border: 1px solid #aaa;
-	width: 190px;
 	box-sizing: border-box;
 	padding: 1em 2em;
 	background: linear-gradient(to bottom, #f3f9ff, #ffffff);
@@ -98,11 +116,32 @@ body {
 	overflow: hidden;
 	margin: 1em auto;
 	position: relative;
-	opacity: 0.66;
 }
 
 .app-next-block-label {
 	text-align: center;
 	color: #777;
 	font-size: 0.8em;
+}
+
+.app-controls button {
+	width: 100%;
+	border: 1px solid #aaa;
+	background-color: white;
+	color: #333;
+	padding: 1em;
+	cursor: pointer;
+	font-size: 0.8em;
+	margin-bottom: 1em;
+	outline: 0;
+}
+
+.app-controls button:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+
+.app-controls button:not(:disabled):hover {
+	color: #2338bc;
+	border-color: #2338bc;
 }

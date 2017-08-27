@@ -10,7 +10,6 @@ import {offsetBlock} from '../helpers/offsetBlock';
 		<div
 			class="app-next-block-wrapper"
 			[style.height]="(6 * cellSize) + 'px'"
-			[style.left]="(boardWidth + 20) + 'px'"
 		>
 			<div class="app-next-block-label">Next Block</div>
 			<div
@@ -28,7 +27,6 @@ import {offsetBlock} from '../helpers/offsetBlock';
 export class NextBlockComponent {
 
 	@Input() block: IBlock | null;
-	@Input() boardWidth: number;
 	@Input() cellSize: number;
 
 	get rowSpan(): number {

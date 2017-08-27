@@ -4,7 +4,7 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 	selector: 'app-scoreboard',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<div class="app-scoreboard" [style.left]="(boardWidth + 20) + 'px'">
+		<div class="app-scoreboard">
 			<div class="app-scoreboard-box app-scoreboard-box-score">
 				<div class="app-scoreboard-box-label">Score</div>
 				<div class="app-scoreboard-box-value">{{score}}</div>
@@ -23,7 +23,6 @@ import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 export class TimerComponent {
 
-	@Input() boardWidth: number;
 	@Input() lines: number;
 	@Input() score: number;
 	@Input() level: number;
