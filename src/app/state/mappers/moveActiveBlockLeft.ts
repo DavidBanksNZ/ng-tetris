@@ -32,17 +32,16 @@ export function moveActiveBlockLeftMapper(state: ITetrisState, action: Action): 
 		}
 	}
 
-	let updatedBlock;
-
 	if (spacesToMove > 0) {
 		const allTheWay = (action as ActionWithPayload<boolean>).payload;
-		updatedBlock = offsetBlock(activeBlock, allTheWay ? -spacesToMove : -1, 0, numRows, numCols);
-	} else {
-		updatedBlock = activeBlock;
-	}
+		const updatedBlock = offsetBlock(activeBlock, allTheWay ? -spacesToMove : -1, 0, numRows, numCols);
 
-	return {
-		...state,
-		activeBlock: updatedBlock
-	};
+		return {
+			...state,
+			activeBlock: updatedBlock
+		};
+	} else {
+		// Can't move block, return existing state
+		return state;
+	}
 }

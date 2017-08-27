@@ -21,6 +21,8 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 	if (spacesToMove > 0) {
 
 		if (!isAuto) {
+			// If block was moved down faster by user interaction, increase the score
+			// by 1 for a one block change. Increase score by twice the rows dropped for a hard drop.
 			score += (allTheWay ? spacesToMove * 2 : 1);
 		}
 
@@ -56,7 +58,6 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 
 				// More points the higher up the row is
 				ptsScored += (10 + numRows - row - 1);
-
 			}
 		}
 
@@ -64,6 +65,7 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 			linesUntilNextLevel -= rowsCleared;
 
 			if (linesUntilNextLevel <= 0) {
+				score += 100 * level;
 				level += 1;
 				linesUntilNextLevel = linesPerLevel;
 			}
@@ -78,6 +80,8 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 			activeBlock = offsetBlock(centerBlock(nextBlock, state.numCols), 0, 0, numRows, numCols);
 			nextBlock = generateRandomBlock();
 		} else {
+			// If block has landed and part of it is above the top of the board,
+			// then the game is over.
 			isFinished = true;
 		}
 	}

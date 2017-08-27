@@ -47,15 +47,19 @@ export class BoardComponent {
 		if (this.state.isStarted && !this.state.isFinished && this.state.isTiming) {
 			switch ($event.keyCode) {
 				case 37:
+					// Left arrow key
 					this.onMoveActiveBlockLeft.emit($event.shiftKey);
 					break;
 				case 39:
+					// Right arrow key
 					this.onMoveActiveBlockRight.emit($event.shiftKey);
 					break;
 				case 38:
+					// Up arrow key
 					this.onRotateActiveBlock.emit();
 					break;
 				case 40:
+					// Down arrow key
 					this.onMoveActiveBlockDown.emit($event.shiftKey);
 					break;
 			}

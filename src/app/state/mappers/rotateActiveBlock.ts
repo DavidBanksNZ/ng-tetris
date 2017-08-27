@@ -41,7 +41,10 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 
 	// Do not perform rotation for square - unnecessary.
 	if (type === BlockType.Square) {
-		return {...state, activeBlock: {...activeBlock, orientation: newOrientation}};
+		return {
+			...state,
+			activeBlock: {...activeBlock, orientation: newOrientation}
+		};
 	}
 
 	const centroid = getCentroid(unrotatedCells, type);
@@ -54,12 +57,16 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 	const minCol = Math.min(...cols);
 	const maxCol = Math.max(...cols);
 
+	let offset = 0;
 	if (minCol < 0) {
 		// move block to the right
-		cells = cells.map(cell => ({...cell, column: cell.column - minCol}));
+		offset = -minCol;
 	}  else if (maxCol >= numCols) {
 		// move block to the left
-		const offset = numCols - maxCol - 1;
+		offset = numCols - maxCol - 1;
+	}
+
+	if (offset !== 0) {
 		cells = cells.map(cell => ({...cell, column: cell.column + offset}));
 	}
 
