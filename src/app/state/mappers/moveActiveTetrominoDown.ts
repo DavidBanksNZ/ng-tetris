@@ -14,7 +14,7 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 	const {allTheWay, isAuto} = payload;
 
 	const {numRows, numCols, linesPerLevel} = state;
-	let {unclearedCells, level, linesUntilNextLevel, nextTetromino, activeTetromino, isFinished, score} = state;
+	let {unclearedCells, level, linesUntilNextLevel, nextTetromino, activeTetromino, score} = state;
 
 	let spacesToMove = calculateSpacesLeft(activeTetromino, unclearedCells, numRows);
 
@@ -31,7 +31,7 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 	}
 	if (spacesToMove === 0) {
 
-		// tetromino has landed. Increase score by number of cells in block.
+		// Tetromino has landed. Increase score by number of cells in block.
 		score += activeTetromino.cells.length;
 
 		const rows = activeTetromino.cells.map(cell => cell.row);
@@ -40,7 +40,7 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 
 		if (maxRow < 0) {
 			// Tetromino has landed totally above the board. Game is over.
-			return {...state, isFinished: true};
+			return {...state, isFinished: true, isTiming: false};
 		}
 
 		unclearedCells = [...unclearedCells, ...activeTetromino.cells];
@@ -49,12 +49,12 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 		let rowsCleared = 0;
 		let ptsScored = 0;
 
-		// low-high order is very important in this loop, since lower rows may change each iteration.
+		// Ascending order is very important in this loop, since lower rows may change each iteration.
 		for (let row = Math.max(0, minRow); row <= maxRow; row++) {
 			const unclearedCellsInRow = unclearedCells.filter(cell => cell.row === row);
 			const isFullRow = unclearedCellsInRow.length === numCols;
 			if (isFullRow) {
-				// remove uncleared cells in this row, move above rows down 1
+				// Remove uncleared cells in this row, move above rows down 1
 				unclearedCells = unclearedCells
 					.filter(cell => cell.row !== row)
 					.map(cell => {
@@ -71,7 +71,6 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 			linesUntilNextLevel -= rowsCleared;
 
 			if (linesUntilNextLevel <= 0) {
-				score += 100 * level;
 				level += 1;
 				linesUntilNextLevel = linesPerLevel;
 			}
@@ -94,8 +93,6 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 		timestamp: Date.now(),
 		activeTetromino,
 		nextTetromino,
-		isFinished,
-		isTiming: !isFinished,
 		score
 	};
 }

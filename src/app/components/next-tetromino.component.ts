@@ -24,7 +24,7 @@ import {offsetTetromino} from '../helpers/offsetTetromino';
 	`
 })
 
-export class NextBlockComponent {
+export class NextTetrominoComponent {
 
 	@Input() tetromino: ITetromino | null;
 	@Input() cellSize: number;
