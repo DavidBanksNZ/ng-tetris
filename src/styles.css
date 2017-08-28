@@ -44,31 +44,31 @@ h1 {
 	box-sizing: border-box;
 }
 
-.app-cell-pyramid {
+.app-cell-O {
 	background-color: hsl(59, 100%, 70%);
 }
 
-.app-cell-square {
+.app-cell-Z {
 	background-color: hsl(0, 100%, 70%);
 }
 
-.app-cell-zig-zag {
+.app-cell-I {
 	background-color: hsl(188, 100%, 70%);
 }
 
-.app-cell-reverse-zig-zag {
+.app-cell-S {
 	background-color: hsl(135, 100%, 70%);
 }
 
-.app-cell-l {
+.app-cell-J {
 	background-color: hsl(223, 100%, 70%);
 }
 
-.app-cell-reverse-l {
+.app-cell-T {
 	background-color: hsl(278, 100%, 70%);
 }
 
-.app-cell-long {
+.app-cell-L {
 	background-color: hsl(28, 100%, 70%);
 }
 
@@ -106,19 +106,19 @@ h1 {
 	color: #888;
 }
 
-.app-next-block-wrapper {
+.app-next-tetromino-wrapper {
 	border: 1px solid #aaa;
 	box-sizing: border-box;
 	padding: 1em 2em;
 	background: linear-gradient(to bottom, #f3f9ff, #ffffff);
 }
-.app-next-block {
+.app-next-tetromino {
 	overflow: hidden;
 	margin: 1em auto;
 	position: relative;
 }
 
-.app-next-block-label {
+.app-next-tetromino-label {
 	text-align: center;
 	color: #777;
 	font-size: 0.8em;

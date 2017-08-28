@@ -1,20 +1,20 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {IBlock} from '../interfaces/block.interface';
+import {ITetromino} from '../interfaces/tetromino.interface';
 import {ICell} from '../interfaces/cell.interface';
 
 @Component({
-	selector: 'app-block',
+	selector: 'app-tetromino',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<app-cell
-			*ngFor="let cell of block?.cells"
+			*ngFor="let cell of tetromino?.cells"
 			[cell]="cell"
 			[size]="cellSize"
 		></app-cell>
 	`
 })
 
-export class BlockComponent {
-	@Input() readonly block: IBlock;
+export class TetrominoComponent {
+	@Input() readonly tetromino: ITetromino;
 	@Input() readonly cellSize: number;
 }

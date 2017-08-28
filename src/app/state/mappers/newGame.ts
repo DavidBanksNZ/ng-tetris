@@ -2,8 +2,8 @@ import {Action} from '@ngrx/store';
 
 import {ITetrisState} from '../state.interface';
 import {calculateInterval} from '../../helpers/calculateInterval';
-import {centerBlock} from '../../helpers/centerBlock';
-import {generateRandomBlock} from '../../helpers/generateRandomBlock';
+import {centerTetromino} from '../../helpers/centerTetromino';
+import {generateRandomTetromino} from '../../helpers/generateRandomTetromino';
 
 
 export function newGameMapper(state: ITetrisState, action: Action): ITetrisState {
@@ -18,10 +18,8 @@ export function newGameMapper(state: ITetrisState, action: Action): ITetrisState
 		level: 1,
 		linesUntilNextLevel: state.linesPerLevel,
 		score: 0,
-		totalBlocks: 0,
-		totalLinesCleared: 0,
 		unclearedCells: [],
-		activeBlock: centerBlock(state.nextBlock, state.numCols),
-		nextBlock: generateRandomBlock()
+		activeTetromino: centerTetromino(state.nextTetromino, state.numCols),
+		nextTetromino: generateRandomTetromino()
 	};
 }

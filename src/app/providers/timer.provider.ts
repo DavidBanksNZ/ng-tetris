@@ -9,7 +9,7 @@ import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/takeUntil';
 
 import {IStore} from '../state/state.interface';
-import {moveActiveBlockDown} from '../state/actions';
+import {moveActiveTetrominoDown} from '../state/actions';
 
 @Injectable()
 export class TimerService {
@@ -32,7 +32,7 @@ export class TimerService {
 					.takeUntil(isNotTiming$);
 			})
 			.subscribe(() => {
-				this.store.dispatch(moveActiveBlockDown(true));
+				this.store.dispatch(moveActiveTetrominoDown(true));
 			});
 
 	}

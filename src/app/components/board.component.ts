@@ -15,7 +15,7 @@ import {ITetrisState} from '../state/state.interface';
 				[cell]="cell"
 				[size]="state.cellSize"
 			></app-cell>
-			<app-block [block]="state.activeBlock" [cellSize]="state.cellSize"></app-block>
+			<app-tetromino [tetromino]="state.activeTetromino" [cellSize]="state.cellSize"></app-tetromino>
 		</div>
 	`
 })
@@ -23,10 +23,10 @@ export class BoardComponent {
 
 	@Input() state: ITetrisState;
 
-	@Output() onMoveActiveBlockLeft = new EventEmitter<boolean>();
-	@Output() onMoveActiveBlockRight = new EventEmitter<boolean>();
-	@Output() onMoveActiveBlockDown = new EventEmitter<boolean>();
-	@Output() onRotateActiveBlock = new EventEmitter<void>();
+	@Output() onMoveActiveTetrominoLeft = new EventEmitter<boolean>();
+	@Output() onMoveActiveTetrominoRight = new EventEmitter<boolean>();
+	@Output() onMoveActiveTetrominoDown = new EventEmitter<boolean>();
+	@Output() onRotateActiveTetromino = new EventEmitter<void>();
 	@Output() onTogglePause = new EventEmitter<void>();
 	@Output() onNewGame = new EventEmitter<void>();
 
@@ -48,19 +48,19 @@ export class BoardComponent {
 			switch ($event.keyCode) {
 				case 37:
 					// Left arrow key
-					this.onMoveActiveBlockLeft.emit($event.shiftKey);
+					this.onMoveActiveTetrominoLeft.emit($event.shiftKey);
 					break;
 				case 39:
 					// Right arrow key
-					this.onMoveActiveBlockRight.emit($event.shiftKey);
+					this.onMoveActiveTetrominoRight.emit($event.shiftKey);
 					break;
 				case 38:
 					// Up arrow key
-					this.onRotateActiveBlock.emit();
+					this.onRotateActiveTetromino.emit();
 					break;
 				case 40:
 					// Down arrow key
-					this.onMoveActiveBlockDown.emit($event.shiftKey);
+					this.onMoveActiveTetrominoDown.emit($event.shiftKey);
 					break;
 			}
 		}

@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs/Observable';
 
 import {
-	moveActiveBlockDown, moveActiveBlockLeft, moveActiveBlockRight, newGame, rotateActiveBlock,
+	moveActiveTetrominoDown, moveActiveTetrominoLeft, moveActiveTetrominoRight, newGame, rotateActiveTetromino,
 	togglePause
 } from '../state/actions';
 import {IStore, ITetrisState} from '../state/state.interface';
@@ -18,12 +18,12 @@ import {TimerService} from '../providers/timer.provider';
 
 				<app-board
 					[state]="state"
-					(onMoveActiveBlockDown)="moveActiveBlockDown($event)"
-					(onMoveActiveBlockLeft)="moveActiveBlockLeft($event)"
-					(onMoveActiveBlockRight)="moveActiveBlockRight($event)"
+					(onMoveActiveTetrominoDown)="moveActiveTetrominoDown($event)"
+					(onMoveActiveTetrominoLeft)="moveActiveTetrominoLeft($event)"
+					(onMoveActiveTetrominoRight)="moveActiveTetrominoRight($event)"
 					(onTogglePause)="togglePause()"
 					(onNewGame)="newGame()"
-					(onRotateActiveBlock)="rotateActiveBlock()">
+					(onRotateActiveTetromino)="rotateActiveTetromino()">
 				</app-board>
 
 				<div class="app-side-panel">
@@ -35,10 +35,10 @@ import {TimerService} from '../providers/timer.provider';
 						[isTiming]="state.isTiming">
 					</app-controls>
 
-					<app-next-block
-						[block]="state.nextBlock"
+					<app-next-tetromino
+						[tetromino]="state.nextTetromino"
 						[cellSize]="state.cellSize">
-					</app-next-block>
+					</app-next-tetromino>
 
 					<app-scoreboard
 						[level]="state.level"
@@ -71,20 +71,20 @@ export class AppComponent implements AfterViewInit {
 		this.store.dispatch(togglePause());
 	}
 
-	public moveActiveBlockDown(allTheWay: boolean): void {
-		this.store.dispatch(moveActiveBlockDown(false, allTheWay));
+	public moveActiveTetrominoDown(allTheWay: boolean): void {
+		this.store.dispatch(moveActiveTetrominoDown(false, allTheWay));
 	}
 
-	public moveActiveBlockLeft(allTheWay: boolean): void {
-		this.store.dispatch(moveActiveBlockLeft(allTheWay));
+	public moveActiveTetrominoLeft(allTheWay: boolean): void {
+		this.store.dispatch(moveActiveTetrominoLeft(allTheWay));
 	}
 
-	public moveActiveBlockRight(allTheWay: boolean): void {
-		this.store.dispatch(moveActiveBlockRight(allTheWay));
+	public moveActiveTetrominoRight(allTheWay: boolean): void {
+		this.store.dispatch(moveActiveTetrominoRight(allTheWay));
 	}
 
-	public rotateActiveBlock(): void {
-		this.store.dispatch(rotateActiveBlock());
+	public rotateActiveTetromino(): void {
+		this.store.dispatch(rotateActiveTetromino());
 	}
 
 }

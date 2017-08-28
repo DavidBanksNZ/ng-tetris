@@ -2,20 +2,20 @@ import {Action} from '@ngrx/store';
 
 import {ITetrisState} from '../state.interface';
 import {ActionWithPayload} from '../../interfaces/actionWithPayload.interface';
-import {offsetBlock} from '../../helpers/offsetBlock';
+import {offsetTetromino} from '../../helpers/offsetTetromino';
 
 
-export function moveActiveBlockLeftMapper(state: ITetrisState, action: Action): ITetrisState {
-	const {activeBlock, numRows, numCols} = state;
+export function moveActiveTetrominoLeftMapper(state: ITetrisState, action: Action): ITetrisState {
+	const {activeTetromino, numRows, numCols} = state;
 	const unclearedCells = state.unclearedCells;
 
 	let spacesToMove = numCols;
-	const rows = activeBlock.cells.map(cell => cell.row);
+	const rows = activeTetromino.cells.map(cell => cell.row);
 	const minRow = Math.min(...rows);
 	const maxRow = Math.max(...rows);
 
 	for (let i = minRow; i <= maxRow; i++) {
-		const cellsInRow = activeBlock.cells.filter(cell => cell.row === i);
+		const cellsInRow = activeTetromino.cells.filter(cell => cell.row === i);
 		const columns = cellsInRow.map(cell => cell.column);
 		const minColumn = Math.min(...columns);
 		const unclearedCellsInRow = unclearedCells
@@ -34,14 +34,14 @@ export function moveActiveBlockLeftMapper(state: ITetrisState, action: Action): 
 
 	if (spacesToMove > 0) {
 		const allTheWay = (action as ActionWithPayload<boolean>).payload;
-		const updatedBlock = offsetBlock(activeBlock, allTheWay ? -spacesToMove : -1, 0, numRows, numCols);
+		const updatedTetromino = offsetTetromino(activeTetromino, allTheWay ? -spacesToMove : -1, 0, numRows, numCols);
 
 		return {
 			...state,
-			activeBlock: updatedBlock
+			activeTetromino: updatedTetromino
 		};
 	} else {
-		// Can't move block, return existing state
+		// Can't move tetromino, return existing state
 		return state;
 	}
 }

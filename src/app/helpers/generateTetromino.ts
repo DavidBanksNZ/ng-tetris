@@ -1,15 +1,15 @@
-import {BlockType} from '../enums/blockType.enum';
-import {IBlock} from '../interfaces/block.interface';
-import {BlockOrientation} from '../enums/blockOrientation.enum';
+import {TetrominoType} from '../enums/tetromino.enum';
+import {ITetromino} from '../interfaces/tetromino.interface';
+import {Orientation} from '../enums/orientation.enum';
 import {ICell} from '../interfaces/cell.interface';
 import {generateCell} from './generateCell';
 
-export function generateBlock (type: BlockType): IBlock {
+export function generateTetromino (type: TetrominoType): ITetromino {
 
 	let cells: ICell[];
 
 	switch (type) {
-		case BlockType.Square:
+		case TetrominoType.O:
 			cells = [
 				generateCell(-2, 0, type),
 				generateCell(-2, 1, type),
@@ -17,7 +17,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-1, 1, type)
 			];
 			break;
-		case BlockType.Pyramid:
+		case TetrominoType.T:
 			cells = [
 				generateCell(-1, 0, type),
 				generateCell(-1, 1, type),
@@ -25,7 +25,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-2, 1, type)
 			];
 			break;
-		case BlockType.Long:
+		case TetrominoType.I:
 			cells = [
 				generateCell(-4, 0, type),
 				generateCell(-3, 0, type),
@@ -33,7 +33,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-1, 0, type)
 			];
 			break;
-		case BlockType.L:
+		case TetrominoType.L:
 			cells = [
 				generateCell(-3, 0, type),
 				generateCell(-2, 0, type),
@@ -41,7 +41,7 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-1, 1, type)
 			];
 			break;
-		case BlockType.ReverseL:
+		case TetrominoType.J:
 			cells = [
 				generateCell(-3, 1, type),
 				generateCell(-2, 1, type),
@@ -49,20 +49,20 @@ export function generateBlock (type: BlockType): IBlock {
 				generateCell(-1, 0, type)
 			];
 			break;
-		case BlockType.ZigZag:
+		case TetrominoType.Z:
 			cells = [
-				generateCell(-1, 0, type),
 				generateCell(-2, 0, type),
 				generateCell(-2, 1, type),
-				generateCell(-3, 1, type)
+				generateCell(-1, 1, type),
+				generateCell(-1, 2, type)
 			];
 			break;
-		case BlockType.ReverseZigZag:
+		case TetrominoType.S:
 			cells = [
-				generateCell(-3, 0, type),
-				generateCell(-2, 0, type),
+				generateCell(-1, 0, type),
+				generateCell(-1, 1, type),
 				generateCell(-2, 1, type),
-				generateCell(-1, 1, type)
+				generateCell(-2, 2, type)
 			];
 			break;
 		default:
@@ -72,7 +72,7 @@ export function generateBlock (type: BlockType): IBlock {
 
 	return {
 		type,
-		orientation: BlockOrientation.Normal,
+		orientation: Orientation.Normal,
 		cells,
 		unrotatedCells: cells
 	};

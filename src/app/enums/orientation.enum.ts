@@ -1,3 +1,3 @@
-export enum BlockOrientation {
+export enum Orientation {
 	Normal, FlippedLeft, UpsideDown, FlippedRight
 }

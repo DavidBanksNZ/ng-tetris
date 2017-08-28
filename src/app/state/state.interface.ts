@@ -1,5 +1,5 @@
 import {ICell} from '../interfaces/cell.interface';
-import {IBlock} from '../interfaces/block.interface';
+import {ITetromino} from '../interfaces/tetromino.interface';
 
 export interface ITetrisState {
 	readonly numRows: number;
@@ -8,11 +8,9 @@ export interface ITetrisState {
 	readonly level: number;
 	readonly linesPerLevel: number;
 	readonly linesUntilNextLevel: number;
-	readonly activeBlock: IBlock | null;
-	readonly nextBlock: IBlock | null;
+	readonly activeTetromino: ITetromino | null;
+	readonly nextTetromino: ITetromino | null;
 	readonly score: number;
-	readonly totalBlocks: number;
-	readonly totalLinesCleared: number;
 	readonly unclearedCells: ICell[];
 	readonly isStarted: boolean;
 	readonly isFinished: boolean;

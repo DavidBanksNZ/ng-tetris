@@ -1,36 +1,37 @@
 import {Action} from '@ngrx/store';
 
 import {ITetrisState} from '../state.interface';
-import {BlockType} from '../../enums/blockType.enum';
-import {BlockOrientation} from '../../enums/blockOrientation.enum';
+import {TetrominoType} from '../../enums/tetromino.enum';
+import {Orientation} from '../../enums/orientation.enum';
 import {ICell} from '../../interfaces/cell.interface';
+import {unique} from '../../helpers/unique';
 
 
-export function rotateActiveBlockMapper(state: ITetrisState, action: Action): ITetrisState {
+export function rotateActiveTetrominoMapper(state: ITetrisState, action: Action): ITetrisState {
 
-	let {activeBlock} = state;
+	let {activeTetromino} = state;
 	const {unclearedCells, numCols, numRows} = state;
-	const {unrotatedCells, type, orientation} = activeBlock;
+	const {unrotatedCells, type, orientation} = activeTetromino;
 
-	let newOrientation: BlockOrientation;
+	let newOrientation: Orientation;
 	let angle: number;
 
 	// Determine the angle to rotate by and the new orientation
 	switch (orientation) {
-		case BlockOrientation.Normal:
-			newOrientation = BlockOrientation.FlippedLeft;
+		case Orientation.Normal:
+			newOrientation = Orientation.FlippedLeft;
 			angle = -0.5 * Math.PI;
 			break;
-		case BlockOrientation.FlippedLeft:
-			newOrientation = BlockOrientation.UpsideDown;
+		case Orientation.FlippedLeft:
+			newOrientation = Orientation.UpsideDown;
 			angle = -1 * Math.PI;
 			break;
-		case BlockOrientation.UpsideDown:
-			newOrientation = BlockOrientation.FlippedRight;
+		case Orientation.UpsideDown:
+			newOrientation = Orientation.FlippedRight;
 			angle = -1.5 * Math.PI;
 			break;
-		case BlockOrientation.FlippedRight:
-			newOrientation = BlockOrientation.Normal;
+		case Orientation.FlippedRight:
+			newOrientation = Orientation.Normal;
 			angle = -2 * Math.PI;
 			break;
 		default:
@@ -40,10 +41,10 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 	}
 
 	// Do not perform rotation for square - unnecessary.
-	if (type === BlockType.Square) {
+	if (type === TetrominoType.O) {
 		return {
 			...state,
-			activeBlock: {...activeBlock, orientation: newOrientation}
+			activeTetromino: {...activeTetromino, orientation: newOrientation}
 		};
 	}
 
@@ -52,17 +53,17 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 	// Now do the rotation
 	let cells: ICell[] = rotate(unrotatedCells, angle, centroid);
 
-	// make sure rotated block not outside bounds
+	// make sure rotated tetromino not outside bounds
 	const cols = cells.map(cell => cell.column);
 	const minCol = Math.min(...cols);
 	const maxCol = Math.max(...cols);
 
 	let offset = 0;
 	if (minCol < 0) {
-		// move block to the right
+		// move tetromino to the right
 		offset = -minCol;
 	}  else if (maxCol >= numCols) {
-		// move block to the left
+		// move tetromino to the left
 		offset = numCols - maxCol - 1;
 	}
 
@@ -79,31 +80,37 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 	let isConflict = false;
 
 	for (let row = minRow; row <= maxRow; row++) {
-		const colsInRow = cells.filter(cell => cell.row === row)
-			.map(cell => cell.column);
-		const unclearedColumnsInRow = unclearedCells.filter(cell => cell.row === row)
-			.map(cell => cell.column);
+
+		const colsInRow = unique(cells.filter(cell => cell.row === row)
+			.map(cell => cell.column));
+
+		const unclearedColumnsInRow = unique(unclearedCells.filter(cell => cell.row === row)
+			.map(cell => cell.column));
+
 		const combined = colsInRow.concat(unclearedColumnsInRow);
 
-		if ((new Set(combined)).size < combined.length) {
+		if (unique(combined).length < combined.length) {
 			isConflict = true;
 			break;
 		}
 	}
 
-	// Now check rotation works vertically. Allow blocks to be offset upwards so that they fit.
-	// Maximum offset is total row span of the block.
+	// Now check rotation works vertically. Allow tetrominos to be offset upwards so that they fit.
+	// Maximum offset is total row span of the tetromino.
 	let rowOffset;
 	if (!isConflict) {
 		for (rowOffset = 0; rowOffset < rowSpan; rowOffset++) {
 			for (let col = minCol; col <= maxCol; col++) {
-				const rowsInCol = cells.filter(cell => cell.column === col)
-					.map(cell => cell.row - rowOffset);
-				const unclearedRowsInColumn = unclearedCells.filter(cell => cell.column === col)
-					.map(cell => cell.row);
+
+				const rowsInCol = unique(cells.filter(cell => cell.column === col)
+					.map(cell => cell.row - rowOffset));
+
+				const unclearedRowsInColumn = unique(unclearedCells.filter(cell => cell.column === col)
+					.map(cell => cell.row));
+
 				const combined = rowsInCol.concat(unclearedRowsInColumn);
 
-				if (Math.max(...rowsInCol) >= numRows || (new Set(combined)).size < combined.length) {
+				if (unclearedRowsInColumn.length > 0 && (Math.max(...rowsInCol) >= numRows || unique(combined).length < combined.length)) {
 					isConflict = true;
 					break;
 				} else {
@@ -121,11 +128,11 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 
 
 	if (isConflict) {
-		// Do not update state with rotated block if it cannot fit.
+		// Do not update state with rotated tetromino if it cannot fit.
 		return state;
 	}
 
-	activeBlock = {
+	activeTetromino = {
 		orientation: newOrientation,
 		type,
 		unrotatedCells,
@@ -134,7 +141,7 @@ export function rotateActiveBlockMapper(state: ITetrisState, action: Action): IT
 
 	return {
 		...state,
-		activeBlock
+		activeTetromino
 	};
 
 }
@@ -155,16 +162,16 @@ function rotate(cells: ICell[], angle: number, centroid: number[]): ICell[] {
 }
 
 
-function getCentroid(cells: ICell[], blockType: BlockType): number[] {
-	switch (blockType) {
-		case BlockType.Long:
+function getCentroid(cells: ICell[], tetrominoType: TetrominoType): number[] {
+	switch (tetrominoType) {
+		case TetrominoType.I:
+		case TetrominoType.Z:
 			return [cells[1].row + 0.5, cells[1].column];
-		case BlockType.ZigZag:
-		case BlockType.ReverseZigZag:
-			return [cells[1].row, cells[1].column + 0.5];
-		case BlockType.Pyramid:
-		case BlockType.L:
-		case BlockType.ReverseL:
+		case TetrominoType.S:
+			return [cells[1].row - 0.5, cells[1].column];
+		case TetrominoType.T:
+		case TetrominoType.L:
+		case TetrominoType.J:
 		default:
 			return [cells[1].row, cells[1].column];
 	}

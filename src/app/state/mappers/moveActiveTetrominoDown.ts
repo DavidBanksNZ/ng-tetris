@@ -2,42 +2,42 @@ import {Action} from '@ngrx/store';
 
 import {ITetrisState} from '../state.interface';
 import {ActionWithPayload} from '../../interfaces/actionWithPayload.interface';
-import {offsetBlock} from '../../helpers/offsetBlock';
-import {centerBlock} from '../../helpers/centerBlock';
-import {generateRandomBlock} from '../../helpers/generateRandomBlock';
+import {offsetTetromino} from '../../helpers/offsetTetromino';
+import {centerTetromino} from '../../helpers/centerTetromino';
+import {generateRandomTetromino} from '../../helpers/generateRandomTetromino';
 import {calculateInterval} from '../../helpers/calculateInterval';
 
 
-export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): ITetrisState {
+export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Action): ITetrisState {
 
 	const {payload} = (action as ActionWithPayload<{isAuto: boolean, allTheWay: boolean}>);
 	const {allTheWay, isAuto} = payload;
 
 	const {numRows, numCols, linesPerLevel} = state;
-	let {unclearedCells, level, linesUntilNextLevel, nextBlock, activeBlock, isFinished, score} = state;
+	let {unclearedCells, level, linesUntilNextLevel, nextTetromino, activeTetromino, isFinished, score} = state;
 
-	let spacesToMove = calculateSpacesLeft(activeBlock, unclearedCells, numRows);
+	let spacesToMove = calculateSpacesLeft(activeTetromino, unclearedCells, numRows);
 
 	if (spacesToMove > 0) {
 
 		if (!isAuto) {
-			// If block was moved down faster by user interaction, increase the score
-			// by 1 for a one block change. Increase score by twice the rows dropped for a hard drop.
+			// If tetromino was moved down faster by user interaction, increase the score
+			// by 1 for a one tetromino change. Increase score by twice the rows dropped for a hard drop.
 			score += (allTheWay ? spacesToMove * 2 : 1);
 		}
 
-		activeBlock = offsetBlock(activeBlock, 0, allTheWay ? spacesToMove : 1, numRows, numCols);
+		activeTetromino = offsetTetromino(activeTetromino, 0, allTheWay ? spacesToMove : 1, numRows, numCols);
 		spacesToMove = allTheWay ? 0 : spacesToMove;
 	}
 	if (spacesToMove === 0) {
 
-		// Block has landed. Increase score by number of cells in block.
-		score += activeBlock.cells.length;
+		// tetromino has landed. Increase score by number of cells in block.
+		score += activeTetromino.cells.length;
 
-		const rows = activeBlock.cells.map(cell => cell.row);
+		const rows = activeTetromino.cells.map(cell => cell.row);
 		let minRow = Math.min(...rows);
 		const maxRow = Math.max(...rows);
-		unclearedCells = [...unclearedCells, ...activeBlock.cells];
+		unclearedCells = [...unclearedCells, ...activeTetromino.cells];
 
 		// Need to check is rows can be cleared before ending game
 		let rowsCleared = 0;
@@ -77,10 +77,10 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 		minRow += rowsCleared;
 
 		if (minRow >= 0) {
-			activeBlock = offsetBlock(centerBlock(nextBlock, state.numCols), 0, 0, numRows, numCols);
-			nextBlock = generateRandomBlock();
+			activeTetromino = offsetTetromino(centerTetromino(nextTetromino, state.numCols), 0, 0, numRows, numCols);
+			nextTetromino = generateRandomTetromino();
 		} else {
-			// If block has landed and part of it is above the top of the board,
+			// If tetromino has landed and part of it is above the top of the board,
 			// then the game is over.
 			isFinished = true;
 		}
@@ -94,8 +94,8 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 		interval: calculateInterval(level),
 		partialInterval: 0,
 		timestamp: Date.now(),
-		activeBlock,
-		nextBlock,
+		activeTetromino,
+		nextTetromino,
 		isFinished,
 		isTiming: !isFinished,
 		score
@@ -103,14 +103,14 @@ export function moveActiveBlockDownMapper(state: ITetrisState, action: Action): 
 }
 
 
-function calculateSpacesLeft (activeBlock, unclearedCells, numRows) {
+function calculateSpacesLeft (activeTetromino, unclearedCells, numRows) {
 	let spacesToMove = numRows;
-	const columns = activeBlock.cells.map(cell => cell.column);
+	const columns = activeTetromino.cells.map(cell => cell.column);
 	const minColumn = Math.min(...columns);
 	const maxColumn = Math.max(...columns);
 
 	for (let i = minColumn; i <= maxColumn; i++) {
-		const cellsInColumn = activeBlock.cells.filter(cell => cell.column === i);
+		const cellsInColumn = activeTetromino.cells.filter(cell => cell.column === i);
 		const rows = cellsInColumn.map(cell => cell.row);
 		const maxRow = Math.max(...rows);
 		const unclearedCellsInColumn = unclearedCells
