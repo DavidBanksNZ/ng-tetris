@@ -35,8 +35,14 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 		score += activeTetromino.cells.length;
 
 		const rows = activeTetromino.cells.map(cell => cell.row);
-		let minRow = Math.min(...rows);
+		const minRow = Math.min(...rows);
 		const maxRow = Math.max(...rows);
+
+		if (maxRow < 0) {
+			// Tetromino has landed totally above the board. Game is over.
+			return {...state, isFinished: true};
+		}
+
 		unclearedCells = [...unclearedCells, ...activeTetromino.cells];
 
 		// Need to check is rows can be cleared before ending game
@@ -74,16 +80,8 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 			score += ptsScored * rowsCleared;
 		}
 
-		minRow += rowsCleared;
-
-		if (minRow >= 0) {
-			activeTetromino = offsetTetromino(centerTetromino(nextTetromino, state.numCols), 0, 0, numRows, numCols);
-			nextTetromino = generateRandomTetromino();
-		} else {
-			// If tetromino has landed and part of it is above the top of the board,
-			// then the game is over.
-			isFinished = true;
-		}
+		activeTetromino = offsetTetromino(centerTetromino(nextTetromino, state.numCols), 0, 0, numRows, numCols);
+		nextTetromino = generateRandomTetromino();
 	}
 
 	return {
