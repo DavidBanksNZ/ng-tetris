@@ -14,7 +14,8 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 	const {allTheWay, isAuto} = payload;
 
 	const {numRows, numCols, linesPerLevel} = state;
-	let {unclearedCells, level, linesUntilNextLevel, nextTetromino, activeTetromino, score} = state;
+	let {unclearedCells, level, linesUntilNextLevel,
+		nextTetromino, activeTetromino, score, combo} = state;
 
 	let spacesToMove = calculateSpacesLeft(activeTetromino, unclearedCells, numRows);
 
@@ -47,7 +48,6 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 
 		// Need to check is rows can be cleared before ending game
 		let rowsCleared = 0;
-		let ptsScored = 0;
 
 		// Ascending order is very important in this loop, since lower rows may change each iteration.
 		for (let row = Math.max(0, minRow); row <= maxRow; row++) {
@@ -61,22 +61,27 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 						return cell.row < row ? {...cell, row: cell.row + 1} : cell;
 					});
 				rowsCleared += 1;
-
-				// More points the higher up the row is
-				ptsScored += (10 + numRows - row - 1);
 			}
 		}
 
 		if (rowsCleared > 0) {
+			score += combo * 50;
+			combo += 1;
+
 			linesUntilNextLevel -= rowsCleared;
+			switch (rowsCleared) {
+				case 4:  score += 800 * level; break;
+				case 3:  score += 500 * level; break;
+				case 2:  score += 300 * level; break;
+				default: score += 100 * level; break;
+			}
 
 			if (linesUntilNextLevel <= 0) {
 				level += 1;
 				linesUntilNextLevel = linesPerLevel;
 			}
-
-			// Give a multiplier for multiple rows cleared
-			score += ptsScored * rowsCleared;
+		} else {
+			combo = 0;
 		}
 
 		activeTetromino = offsetTetromino(centerTetromino(nextTetromino, state.numCols), 0, 0, numRows, numCols);
@@ -88,6 +93,7 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 		unclearedCells,
 		linesUntilNextLevel,
 		level,
+		combo,
 		interval: calculateInterval(level),
 		partialInterval: 0,
 		timestamp: Date.now(),

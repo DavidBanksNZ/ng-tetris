@@ -12,6 +12,7 @@ export function rotateActiveTetrominoMapper(state: ITetrisState, action: Action)
 	let {activeTetromino} = state;
 	const {unclearedCells, numCols, numRows} = state;
 	const {unrotatedCells, type, orientation} = activeTetromino;
+	let {cells} = activeTetromino;
 
 	let newOrientation: Orientation;
 	let angle: number;
@@ -51,7 +52,24 @@ export function rotateActiveTetrominoMapper(state: ITetrisState, action: Action)
 	const centroid = getCentroid(unrotatedCells, type);
 
 	// Now do the rotation
-	let cells: ICell[] = rotate(unrotatedCells, angle, centroid);
+	// If tetromino is touching the bottom of the board,
+	// the rotated tetromino will be forced to also be touching the bottom
+	// of the board.
+	let maxRow = Math.max(...cells.map(cell => cell.row));
+	const forceToBottom = maxRow  === numRows - 1;
+	cells = rotate(unrotatedCells, angle, centroid);
+
+	if (forceToBottom) {
+		const formerMaxRow = maxRow;
+		maxRow = Math.max(...cells.map(cell => cell.row));
+		const rowOffset = formerMaxRow - maxRow;
+		if (rowOffset > 0) {
+			cells = cells.map(cell => ({
+				...cell,
+				row: cell.row + rowOffset
+			}));
+		}
+	}
 
 	// make sure rotated tetromino not outside bounds
 	const cols = cells.map(cell => cell.column);
@@ -75,7 +93,7 @@ export function rotateActiveTetrominoMapper(state: ITetrisState, action: Action)
 	// first check if the rotation works horizontally
 	const rows = cells.map(cell => cell.row);
 	const minRow = Math.min(...rows);
-	const maxRow = Math.max(...rows);
+	maxRow = Math.max(...rows);
 	const rowSpan = maxRow - minRow + 1;
 	let isConflict = false;
 

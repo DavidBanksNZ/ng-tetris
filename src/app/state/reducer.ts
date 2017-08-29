@@ -24,6 +24,7 @@ const INITIAL_STATE: ITetrisState = {
 	activeTetromino: null,
 	nextTetromino: generateRandomTetromino(),
 	score: 0,
+	combo: 0,
 	unclearedCells: [],
 	isStarted: false,
 	isFinished: false,
