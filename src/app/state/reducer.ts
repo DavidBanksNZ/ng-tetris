@@ -26,6 +26,7 @@ const INITIAL_STATE: ITetrisState = {
 	score: 0,
 	combo: 0,
 	unclearedCells: [],
+	ghostCells: [],
 	isStarted: false,
 	isFinished: false,
 

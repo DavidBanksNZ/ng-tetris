@@ -72,6 +72,11 @@ h1 {
 	background-color: hsl(28, 100%, 70%);
 }
 
+.app-cell-ghost {
+	background-color: rgba(0, 0, 0, 0.05);
+	border-color: #888;
+}
+
 .app-scoreboard {
 	width: 100%;
 	display: inline-block;

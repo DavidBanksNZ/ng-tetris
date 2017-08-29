@@ -15,6 +15,7 @@ export interface ITetrisState {
 	readonly isStarted: boolean;
 	readonly isFinished: boolean;
 	readonly combo: number;
+	readonly ghostCells: ICell[];
 
 	readonly timestamp: number;
 	readonly isTiming: boolean;

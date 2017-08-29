@@ -6,7 +6,7 @@ import {ICell} from '../interfaces/cell.interface';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div
-			class="{{'app-cell app-cell-' + cell.type}}"
+			class="{{'app-cell app-cell-' + cellClass}}"
 			[style.width]="size + 'px'"
 			[style.height]="size + 'px'"
 			[style.left]="cell.column * (size - 1) + 'px'"
@@ -17,4 +17,9 @@ import {ICell} from '../interfaces/cell.interface';
 export class CellComponent {
 	@Input() readonly cell: ICell;
 	@Input() readonly size: number;
+	@Input() readonly isGhost: boolean;
+
+	get cellClass(): string {
+		return this.isGhost ? 'ghost' : this.cell.type;
+	}
 }

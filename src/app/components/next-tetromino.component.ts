@@ -18,7 +18,11 @@ import {offsetTetromino} from '../helpers/offsetTetromino';
 				[style.height]="4 * cellSize + 'px'"
 				[style.top]="0.5 * (4 - rowSpan) * cellSize + 'px'"
 			>
-				<app-tetromino [tetromino]="adjustTetrominoPosition(tetromino)" [cellSize]="cellSize"></app-tetromino>
+				<app-tetromino
+					[cells]="adjustTetrominoPosition(tetromino).cells"
+					[cellSize]="cellSize"
+					[isGhost]="false">
+				</app-tetromino>
 			</div>
 		</div>
 	`

@@ -6,6 +6,8 @@ import {offsetTetromino} from '../../helpers/offsetTetromino';
 import {centerTetromino} from '../../helpers/centerTetromino';
 import {generateRandomTetromino} from '../../helpers/generateRandomTetromino';
 import {calculateInterval} from '../../helpers/calculateInterval';
+import {isOverlapping} from '../../helpers/isOverlapping';
+import {calculateSpacesLeft} from '../../helpers/calculateMaxSpacesLeft';
 
 
 export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Action): ITetrisState {
@@ -14,8 +16,8 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 	const {allTheWay, isAuto} = payload;
 
 	const {numRows, numCols, linesPerLevel} = state;
-	let {unclearedCells, level, linesUntilNextLevel,
-		nextTetromino, activeTetromino, score, combo} = state;
+	let {unclearedCells, level, linesUntilNextLevel, isFinished, isTiming,
+		nextTetromino, activeTetromino, score, combo, ghostCells} = state;
 
 	let spacesToMove = calculateSpacesLeft(activeTetromino, unclearedCells, numRows);
 
@@ -84,8 +86,26 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 			combo = 0;
 		}
 
-		activeTetromino = offsetTetromino(centerTetromino(nextTetromino, state.numCols), 0, 0, numRows, numCols);
-		nextTetromino = generateRandomTetromino();
+		const nextActiveTetromino = offsetTetromino(centerTetromino(nextTetromino, state.numCols), 0, 0, numRows, numCols);
+
+		if (isOverlapping(nextActiveTetromino, unclearedCells)) {
+			// if next block will overlap existing uncleared cells, game is over.
+			isFinished = true;
+			isTiming = false;
+		} else {
+			activeTetromino = nextActiveTetromino;
+			nextTetromino = generateRandomTetromino();
+
+			ghostCells = activeTetromino.cells.map(cell => ({
+				...cell,
+				row: cell.row + numRows
+			}));
+		}
+	} else {
+		ghostCells = activeTetromino.cells.map(cell => ({
+			...cell,
+			row: cell.row + spacesToMove - 1
+		}));
 	}
 
 	return {
@@ -97,35 +117,11 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 		interval: calculateInterval(level),
 		partialInterval: 0,
 		timestamp: Date.now(),
+		ghostCells,
 		activeTetromino,
 		nextTetromino,
+		isFinished,
+		isTiming,
 		score
 	};
-}
-
-
-function calculateSpacesLeft (activeTetromino, unclearedCells, numRows) {
-	let spacesToMove = numRows;
-	const columns = activeTetromino.cells.map(cell => cell.column);
-	const minColumn = Math.min(...columns);
-	const maxColumn = Math.max(...columns);
-
-	for (let i = minColumn; i <= maxColumn; i++) {
-		const cellsInColumn = activeTetromino.cells.filter(cell => cell.column === i);
-		const rows = cellsInColumn.map(cell => cell.row);
-		const maxRow = Math.max(...rows);
-		const unclearedCellsInColumn = unclearedCells
-			.filter(cell => cell.column === i && cell.row > maxRow);
-
-		const highestUnclearedCellRow = unclearedCellsInColumn.length > 0 ?
-			Math.min(...unclearedCellsInColumn.map(cell => cell.row)) :
-			numRows;
-
-		spacesToMove = Math.min(spacesToMove, highestUnclearedCellRow - maxRow - 1);
-
-		if (spacesToMove === 0) {
-			break;
-		}
-	}
-	return spacesToMove;
 }

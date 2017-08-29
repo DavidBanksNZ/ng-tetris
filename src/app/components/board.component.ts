@@ -10,12 +10,23 @@ import {ITetrisState} from '../state/state.interface';
 			[style.width]="width + 'px'"
 			[style.height]="height + 'px'"
 		>
+			<app-tetromino
+				[cells]="state.ghostCells"
+				[cellSize]="state.cellSize"
+				[isGhost]="true">
+			</app-tetromino>
+
 			<app-cell
 				*ngFor="let cell of state.unclearedCells"
 				[cell]="cell"
-				[size]="state.cellSize"
-			></app-cell>
-			<app-tetromino [tetromino]="state.activeTetromino" [cellSize]="state.cellSize"></app-tetromino>
+				[size]="state.cellSize">
+			</app-cell>
+
+			<app-tetromino
+				[cells]="state.activeTetromino?.cells"
+				[cellSize]="state.cellSize"
+				[isGhost]="false">
+			</app-tetromino>
 		</div>
 	`
 })

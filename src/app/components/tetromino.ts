@@ -7,14 +7,16 @@ import {ICell} from '../interfaces/cell.interface';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<app-cell
-			*ngFor="let cell of tetromino?.cells"
+			*ngFor="let cell of cells"
 			[cell]="cell"
 			[size]="cellSize"
+			[isGhost]="isGhost"
 		></app-cell>
 	`
 })
 
 export class TetrominoComponent {
-	@Input() readonly tetromino: ITetromino;
+	@Input() readonly cells: ICell[];
 	@Input() readonly cellSize: number;
+	@Input() readonly isGhost: boolean;
 }

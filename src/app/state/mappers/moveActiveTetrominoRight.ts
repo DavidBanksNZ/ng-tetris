@@ -7,6 +7,7 @@ import {offsetTetromino} from '../../helpers/offsetTetromino';
 
 export function moveActiveTetrominoRightMapper(state: ITetrisState, action: Action): ITetrisState {
 	const {activeTetromino, numRows, numCols} = state;
+	let {ghostCells} = state;
 	const unclearedCells = state.unclearedCells;
 
 	let spacesToMove = numCols;
@@ -35,8 +36,15 @@ export function moveActiveTetrominoRightMapper(state: ITetrisState, action: Acti
 	if (spacesToMove > 0) {
 		const allTheWay = (action as ActionWithPayload<boolean>).payload;
 		const updatedTetromino = offsetTetromino(activeTetromino, allTheWay ? spacesToMove : 1, 0, numRows, numCols);
+
+		ghostCells = ghostCells.map(cell => ({
+			...cell,
+			column: cell.column + 1
+		}));
+
 		return {
 			...state,
+			ghostCells,
 			activeTetromino: updatedTetromino
 		};
 	} else {

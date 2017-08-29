@@ -7,6 +7,7 @@ import {generateRandomTetromino} from '../../helpers/generateRandomTetromino';
 
 
 export function newGameMapper(state: ITetrisState, action: Action): ITetrisState {
+	const activeTetromino = centerTetromino(state.nextTetromino, state.numCols);
 	return {
 		...state,
 		isStarted: true,
@@ -19,7 +20,8 @@ export function newGameMapper(state: ITetrisState, action: Action): ITetrisState
 		linesUntilNextLevel: state.linesPerLevel,
 		score: 0,
 		unclearedCells: [],
-		activeTetromino: centerTetromino(state.nextTetromino, state.numCols),
+		activeTetromino,
+		ghostCells: activeTetromino.cells.map(cell => ({...cell, row: cell.row + state.numRows})),
 		nextTetromino: generateRandomTetromino()
 	};
 }
