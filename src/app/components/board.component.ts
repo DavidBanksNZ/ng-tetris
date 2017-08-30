@@ -34,10 +34,11 @@ export class BoardComponent {
 
 	@Input() state: ITetrisState;
 
-	@Output() onMoveActiveTetrominoLeft = new EventEmitter<boolean>();
-	@Output() onMoveActiveTetrominoRight = new EventEmitter<boolean>();
-	@Output() onMoveActiveTetrominoDown = new EventEmitter<boolean>();
-	@Output() onRotateActiveTetromino = new EventEmitter<void>();
+	@Output() onMoveLeft = new EventEmitter<void>();
+	@Output() onMoveRight = new EventEmitter<void>();
+	@Output() onSoftDrop = new EventEmitter<void>();
+	@Output() onRotate = new EventEmitter<void>();
+	@Output() onHardDrop = new EventEmitter<void>();
 	@Output() onTogglePause = new EventEmitter<void>();
 	@Output() onNewGame = new EventEmitter<void>();
 
@@ -59,19 +60,23 @@ export class BoardComponent {
 			switch ($event.keyCode) {
 				case 37:
 					// Left arrow key
-					this.onMoveActiveTetrominoLeft.emit($event.shiftKey);
+					this.onMoveLeft.emit();
 					break;
 				case 39:
 					// Right arrow key
-					this.onMoveActiveTetrominoRight.emit($event.shiftKey);
+					this.onMoveRight.emit();
 					break;
 				case 38:
 					// Up arrow key
-					this.onRotateActiveTetromino.emit();
+					this.onRotate.emit();
 					break;
 				case 40:
 					// Down arrow key
-					this.onMoveActiveTetrominoDown.emit($event.shiftKey);
+					this.onSoftDrop.emit();
+					break;
+				case 32:
+					// Space bar
+					this.onHardDrop.emit();
 					break;
 			}
 		}

@@ -5,11 +5,11 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="app-controls">
-			<button type="button" (click)="onNew.emit()">New Game</button>
+			<button type="button" (click)="newGameBtnClicked($event)">New Game</button>
 			<button
 				type="button"
 				[disabled]="!isStarted || isFinished"
-				(click)="onPause.emit()"
+				(click)="pauseBtnClicked($event)"
 			>{{isPaused ? 'Resume Game' : 'Pause Game'}}</button>
 		</div>
 	`
@@ -25,5 +25,15 @@ export class ControlsComponent {
 
 	get isPaused(): boolean {
 		return this.isStarted && !this.isFinished && !this.isTiming;
+	}
+
+	pauseBtnClicked($event): void {
+		this.onPause.emit();
+		$event.target.blur();
+	}
+
+	newGameBtnClicked($event): void {
+		this.onNew.emit();
+		$event.target.blur();
 	}
 }

@@ -8,12 +8,13 @@ import {generateRandomTetromino} from '../../helpers/generateRandomTetromino';
 import {calculateInterval} from '../../helpers/calculateInterval';
 import {isOverlapping} from '../../helpers/isOverlapping';
 import {calculateSpacesLeft} from '../../helpers/calculateMaxSpacesLeft';
+import {HARD_DROP} from '../actions';
 
 
 export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Action): ITetrisState {
 
-	const {payload} = (action as ActionWithPayload<{isAuto: boolean, allTheWay: boolean}>);
-	const {allTheWay, isAuto} = payload;
+	const isHardDrop = action.type === HARD_DROP;
+	const isAuto = (action as ActionWithPayload<boolean>).payload;
 
 	const {numRows, numCols, linesPerLevel} = state;
 	let {unclearedCells, level, linesUntilNextLevel, isFinished, isTiming,
@@ -26,11 +27,11 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 		if (!isAuto) {
 			// If tetromino was moved down faster by user interaction, increase the score
 			// by 1 for a one tetromino change. Increase score by twice the rows dropped for a hard drop.
-			score += (allTheWay ? spacesToMove * 2 : 1);
+			score += (isHardDrop ? spacesToMove * 2 : 1);
 		}
 
-		activeTetromino = offsetTetromino(activeTetromino, 0, allTheWay ? spacesToMove : 1, numRows, numCols);
-		spacesToMove = allTheWay ? 0 : spacesToMove;
+		activeTetromino = offsetTetromino(activeTetromino, 0, isHardDrop ? spacesToMove : 1, numRows, numCols);
+		spacesToMove = isHardDrop ? 0 : spacesToMove;
 	}
 	if (spacesToMove === 0) {
 

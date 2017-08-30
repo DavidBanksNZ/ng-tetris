@@ -3,8 +3,8 @@ import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs/Observable';
 
 import {
-	moveActiveTetrominoDown, moveActiveTetrominoLeft, moveActiveTetrominoRight, newGame, rotateActiveTetromino,
-	togglePause
+	hardDrop, moveActiveTetrominoLeft, moveActiveTetrominoRight, newGame, rotateActiveTetromino,
+	softDrop, togglePause
 } from '../state/actions';
 import {IStore, ITetrisState} from '../state/state.interface';
 import {TimerService} from '../providers/timer.provider';
@@ -18,12 +18,13 @@ import {TimerService} from '../providers/timer.provider';
 
 				<app-board
 					[state]="state"
-					(onMoveActiveTetrominoDown)="moveActiveTetrominoDown($event)"
-					(onMoveActiveTetrominoLeft)="moveActiveTetrominoLeft($event)"
-					(onMoveActiveTetrominoRight)="moveActiveTetrominoRight($event)"
+					(onSoftDrop)="softDrop()"
+					(onHardDrop)="hardDrop()"
+					(onMoveLeft)="moveLeft()"
+					(onMoveRight)="moveRight()"
 					(onTogglePause)="togglePause()"
 					(onNewGame)="newGame()"
-					(onRotateActiveTetromino)="rotateActiveTetromino()">
+					(onRotate)="rotate()">
 				</app-board>
 
 				<div class="app-side-panel">
@@ -71,19 +72,23 @@ export class AppComponent implements AfterViewInit {
 		this.store.dispatch(togglePause());
 	}
 
-	public moveActiveTetrominoDown(allTheWay: boolean): void {
-		this.store.dispatch(moveActiveTetrominoDown(false, allTheWay));
+	public softDrop(): void {
+		this.store.dispatch(softDrop(false));
 	}
 
-	public moveActiveTetrominoLeft(allTheWay: boolean): void {
-		this.store.dispatch(moveActiveTetrominoLeft(allTheWay));
+	public hardDrop(): void {
+		this.store.dispatch(hardDrop());
 	}
 
-	public moveActiveTetrominoRight(allTheWay: boolean): void {
-		this.store.dispatch(moveActiveTetrominoRight(allTheWay));
+	public moveLeft(): void {
+		this.store.dispatch(moveActiveTetrominoLeft());
 	}
 
-	public rotateActiveTetromino(): void {
+	public moveRight(): void {
+		this.store.dispatch(moveActiveTetrominoRight());
+	}
+
+	public rotate(): void {
 		this.store.dispatch(rotateActiveTetromino());
 	}
 

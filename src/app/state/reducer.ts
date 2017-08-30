@@ -2,7 +2,7 @@ import {ITetrisState} from './state.interface';
 import {Action} from '@ngrx/store';
 
 import {
-	MOVE_ACTIVE_TETROMINO_DOWN, MOVE_ACTIVE_TETROMINO_LEFT, MOVE_ACTIVE_TETROMINO_RIGHT, NEW_GAME,
+	SOFT_DROP, HARD_DROP, MOVE_ACTIVE_TETROMINO_LEFT, MOVE_ACTIVE_TETROMINO_RIGHT, NEW_GAME,
 	ROTATE_ACTIVE_TETROMINO, TOGGLE_PAUSE
 } from './actions';
 import {generateRandomTetromino} from '../helpers/generateRandomTetromino';
@@ -48,7 +48,8 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 		case TOGGLE_PAUSE:
 			return togglePauseMapper(state, action);
 
-		case MOVE_ACTIVE_TETROMINO_DOWN:
+		case SOFT_DROP:
+		case HARD_DROP:
 			return moveActiveTetrominoDownMapper(state, action);
 
 		case MOVE_ACTIVE_TETROMINO_LEFT:

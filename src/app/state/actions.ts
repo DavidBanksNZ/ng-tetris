@@ -4,7 +4,8 @@ import {ActionWithPayload} from '../interfaces/actionWithPayload.interface';
 export const NEW_GAME = 'NEW_GAME';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 
-export const MOVE_ACTIVE_TETROMINO_DOWN = 'MOVE_ACTIVE_TETROMINO_DOWN';
+export const SOFT_DROP = 'SOFT_DROP';
+export const HARD_DROP = 'HARD_DROP';
 export const MOVE_ACTIVE_TETROMINO_LEFT = 'MOVE_ACTIVE_TETROMINO_LEFT';
 export const MOVE_ACTIVE_TETROMINO_RIGHT = 'MOVE_ACTIVE_TETROMINO_RIGHT';
 export const ROTATE_ACTIVE_TETROMINO = 'ROTATE_ACTIVE_TETROMINO';
@@ -18,16 +19,20 @@ export function togglePause(): Action {
 	return {type: TOGGLE_PAUSE};
 }
 
-export function moveActiveTetrominoDown(isAuto: boolean, allTheWay: boolean = false): ActionWithPayload<{isAuto: boolean, allTheWay: boolean}> {
-	return {type: MOVE_ACTIVE_TETROMINO_DOWN, payload: {isAuto, allTheWay}};
+export function softDrop(isAuto: boolean): ActionWithPayload<boolean> {
+	return {type: SOFT_DROP, payload: isAuto};
 }
 
-export function moveActiveTetrominoLeft(allTheWay: boolean): ActionWithPayload<boolean> {
-	return {type: MOVE_ACTIVE_TETROMINO_LEFT, payload: allTheWay};
+export function hardDrop(): Action {
+	return {type: HARD_DROP};
 }
 
-export function moveActiveTetrominoRight(allTheWay: boolean): ActionWithPayload<boolean> {
-	return {type: MOVE_ACTIVE_TETROMINO_RIGHT, payload: allTheWay};
+export function moveActiveTetrominoLeft(): Action {
+	return {type: MOVE_ACTIVE_TETROMINO_LEFT};
+}
+
+export function moveActiveTetrominoRight(): Action {
+	return {type: MOVE_ACTIVE_TETROMINO_RIGHT};
 }
 
 export function rotateActiveTetromino(): Action {
