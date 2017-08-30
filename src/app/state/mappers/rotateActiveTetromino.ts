@@ -5,6 +5,7 @@ import {TetrominoType} from '../../enums/tetromino.enum';
 import {Orientation} from '../../enums/orientation.enum';
 import {ICell} from '../../interfaces/cell.interface';
 import {unique} from '../../helpers/unique';
+import {calculateSpacesLeft} from '../../helpers/calculateMaxSpacesLeft';
 
 
 export function rotateActiveTetrominoMapper(state: ITetrisState, action: Action): ITetrisState {
@@ -157,9 +158,17 @@ export function rotateActiveTetrominoMapper(state: ITetrisState, action: Action)
 		cells
 	};
 
+	const spacesToMove = calculateSpacesLeft(activeTetromino, unclearedCells, numRows);
+
+	const ghostCells = activeTetromino.cells.map(cell => ({
+		...cell,
+		row: cell.row + spacesToMove
+	}));
+
 	return {
 		...state,
-		activeTetromino
+		activeTetromino,
+		ghostCells
 	};
 
 }

@@ -17,7 +17,7 @@ import {ITetrisState} from '../state/state.interface';
 			</app-tetromino>
 
 			<app-cell
-				*ngFor="let cell of state.unclearedCells"
+				*ngFor="let cell of state.unclearedCells; trackBy: unclearedCellsTrackBy"
 				[cell]="cell"
 				[size]="state.cellSize">
 			</app-cell>
@@ -84,6 +84,10 @@ export class BoardComponent {
 
 	get height(): number {
 		return this.state.numRows * (this.state.cellSize - 1) + 1;
+	}
+
+	unclearedCellsTrackBy(index) {
+		return index;
 	}
 
 }

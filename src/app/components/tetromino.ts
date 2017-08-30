@@ -7,7 +7,7 @@ import {ICell} from '../interfaces/cell.interface';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<app-cell
-			*ngFor="let cell of cells"
+			*ngFor="let cell of cells; trackBy: trackByFn"
 			[cell]="cell"
 			[size]="cellSize"
 			[isGhost]="isGhost"
@@ -19,4 +19,9 @@ export class TetrominoComponent {
 	@Input() readonly cells: ICell[];
 	@Input() readonly cellSize: number;
 	@Input() readonly isGhost: boolean;
+
+	// Fine to track by cell index, tetromino always has 4 cells.
+	trackByFn(index, cell) {
+		return index;
+	}
 }

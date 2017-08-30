@@ -82,6 +82,12 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 				level += 1;
 				linesUntilNextLevel = linesPerLevel;
 			}
+
+			// Perfect clearing bonus
+			if (unclearedCells.length === 0) {
+				score += 1200 * level;
+			}
+
 		} else {
 			combo = 0;
 		}
@@ -96,9 +102,11 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 			activeTetromino = nextActiveTetromino;
 			nextTetromino = generateRandomTetromino();
 
+			spacesToMove = calculateSpacesLeft(activeTetromino, unclearedCells, numRows);
+
 			ghostCells = activeTetromino.cells.map(cell => ({
 				...cell,
-				row: cell.row + numRows
+				row: cell.row + spacesToMove
 			}));
 		}
 	} else {

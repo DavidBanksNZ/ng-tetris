@@ -3,6 +3,7 @@ import {Action} from '@ngrx/store';
 import {ITetrisState} from '../state.interface';
 import {ActionWithPayload} from '../../interfaces/actionWithPayload.interface';
 import {offsetTetromino} from '../../helpers/offsetTetromino';
+import {calculateSpacesLeft} from '../../helpers/calculateMaxSpacesLeft';
 
 
 export function moveActiveTetrominoLeftMapper(state: ITetrisState, action: Action): ITetrisState {
@@ -37,9 +38,11 @@ export function moveActiveTetrominoLeftMapper(state: ITetrisState, action: Actio
 		const allTheWay = (action as ActionWithPayload<boolean>).payload;
 		const updatedTetromino = offsetTetromino(activeTetromino, allTheWay ? -spacesToMove : -1, 0, numRows, numCols);
 
-		ghostCells = ghostCells.map(cell => ({
+		const spacesToMoveDown = calculateSpacesLeft(updatedTetromino, unclearedCells, numRows);
+
+		ghostCells = updatedTetromino.cells.map(cell => ({
 			...cell,
-			column: cell.column - 1
+			row: cell.row + spacesToMoveDown
 		}));
 
 		return {
