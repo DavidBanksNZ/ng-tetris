@@ -7,6 +7,7 @@ import {ITetrisState} from '../state/state.interface';
 	template: `
 		<div
 			class="app-board"
+			[class.app-board-paused]="isPaused"
 			[style.width]="width + 'px'"
 			[style.height]="height + 'px'"
 		>
@@ -27,6 +28,8 @@ import {ITetrisState} from '../state/state.interface';
 				[cellSize]="state.cellSize"
 				[isGhost]="false">
 			</app-tetromino>
+
+			<div class="app-paused-banner" *ngIf="isPaused">Game Paused</div>
 		</div>
 	`
 })
@@ -98,6 +101,10 @@ export class BoardComponent {
 
 	unclearedCellsTrackBy(index) {
 		return index;
+	}
+
+	get isPaused(): boolean {
+		return this.state.isStarted && !this.state.isFinished && !this.state.isTiming;
 	}
 
 }

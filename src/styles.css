@@ -90,6 +90,10 @@ h1 {
 	}
 }
 
+.app-board-paused .app-cell {
+	visibility: hidden;
+}
+
 .app-scoreboard-box {
 	padding: 0.5em 1em;
 	border: 1px solid #aaa;
@@ -214,4 +218,15 @@ button:not(:disabled):hover {
 }
 .app-help-modal .app-help-modal-close-btn:hover {
 	color: #ff4444;
+}
+
+.app-paused-banner {
+	position: absolute;
+	width: 100%;
+	height: 100px;
+	line-height: 100px;
+	font-size: 1.5em;
+	top: calc(50% - 50px);
+	background-color: rgba(255, 255, 255, 0.9);
+	box-shadow: #CCC 0 0 10px 0;
 }
