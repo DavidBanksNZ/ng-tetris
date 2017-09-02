@@ -10,6 +10,8 @@ export const MOVE_ACTIVE_TETROMINO_LEFT = 'MOVE_ACTIVE_TETROMINO_LEFT';
 export const MOVE_ACTIVE_TETROMINO_RIGHT = 'MOVE_ACTIVE_TETROMINO_RIGHT';
 export const ROTATE_ACTIVE_TETROMINO = 'ROTATE_ACTIVE_TETROMINO';
 
+export const TOGGLE_HELP_MODAL = 'TOGGLE_HELP_MODAL';
+
 
 export function newGame(): Action {
 	return {type: NEW_GAME};
@@ -37,4 +39,8 @@ export function moveActiveTetrominoRight(): Action {
 
 export function rotateActiveTetromino(isClockwise: boolean): ActionWithPayload<boolean> {
 	return {type: ROTATE_ACTIVE_TETROMINO, payload: isClockwise};
+}
+
+export function toggleHelpModal(isOpen: boolean): ActionWithPayload<boolean> {
+	return {type: TOGGLE_HELP_MODAL, payload: isOpen};
 }

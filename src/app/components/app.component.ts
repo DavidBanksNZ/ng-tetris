@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/Observable';
 
 import {
 	hardDrop, moveActiveTetrominoLeft, moveActiveTetrominoRight, newGame, rotateActiveTetromino,
-	softDrop, togglePause
+	softDrop, toggleHelpModal, togglePause
 } from '../state/actions';
 import {IStore, ITetrisState} from '../state/state.interface';
 import {TimerService} from '../providers/timer.provider';
@@ -31,6 +31,7 @@ import {TimerService} from '../providers/timer.provider';
 					<app-controls
 						(onNew)="newGame()"
 						(onPause)="togglePause()"
+						(onHelpBtnClick)="toggleHelpModal(true)"
 						[isStarted]="state.isStarted"
 						[isFinished]="state.isFinished"
 						[isTiming]="state.isTiming">
@@ -46,11 +47,15 @@ import {TimerService} from '../providers/timer.provider';
 						[lines]="state.linesUntilNextLevel"
 						[score]="state.score">
 					</app-scoreboard>
-
-					<app-help></app-help>
 				</div>
 
+				<app-help
+					[isHelpModalOpen]="state.isHelpModalOpen"
+					(onHelpModalClose)="toggleHelpModal(false)">
+				</app-help>
+
 			</div>
+
 			<div class="app-footer">
 				<p>Built by David Banks. <a href="https://github.com/DavidBanksNZ/ng-tetris/">GitHub Repo</a></p>
 			</div>
@@ -69,32 +74,36 @@ export class AppComponent implements AfterViewInit {
 		this.timer.init();
 	}
 
-	public newGame(): void {
+	newGame(): void {
 		this.store.dispatch(newGame());
 	}
 
-	public togglePause(): void {
+	togglePause(): void {
 		this.store.dispatch(togglePause());
 	}
 
-	public softDrop(): void {
+	softDrop(): void {
 		this.store.dispatch(softDrop(false));
 	}
 
-	public hardDrop(): void {
+	hardDrop(): void {
 		this.store.dispatch(hardDrop());
 	}
 
-	public moveLeft(): void {
+	moveLeft(): void {
 		this.store.dispatch(moveActiveTetrominoLeft());
 	}
 
-	public moveRight(): void {
+	moveRight(): void {
 		this.store.dispatch(moveActiveTetrominoRight());
 	}
 
-	public rotate(isClockwise: boolean): void {
+	rotate(isClockwise: boolean): void {
 		this.store.dispatch(rotateActiveTetromino(isClockwise));
+	}
+
+	toggleHelpModal(state: boolean): void {
+		this.store.dispatch(toggleHelpModal(state));
 	}
 
 }

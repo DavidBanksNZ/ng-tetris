@@ -11,6 +11,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@
 				[disabled]="!isStarted || isFinished"
 				(click)="pauseBtnClicked($event)"
 			>{{isPaused ? 'Resume Game' : 'Pause Game'}}</button>
+			<button type="button" (click)="onHelpBtnClick.emit()">Help</button>
 		</div>
 	`
 })
@@ -22,6 +23,7 @@ export class ControlsComponent {
 
 	@Output() onNew = new EventEmitter<void>();
 	@Output() onPause = new EventEmitter<void>();
+	@Output() onHelpBtnClick = new EventEmitter<void>();
 
 	get isPaused(): boolean {
 		return this.isStarted && !this.isFinished && !this.isTiming;

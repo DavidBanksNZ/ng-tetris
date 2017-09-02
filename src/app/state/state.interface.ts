@@ -21,6 +21,8 @@ export interface ITetrisState {
 	readonly isTiming: boolean;
 	readonly interval: number;
 	readonly partialInterval: number;
+
+	readonly isHelpModalOpen: boolean;
 }
 
 export interface IStore {

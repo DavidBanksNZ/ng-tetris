@@ -35,9 +35,6 @@ export function moveActiveTetrominoDownMapper(state: ITetrisState, action: Actio
 	}
 	if (spacesToMove === 0) {
 
-		// Tetromino has landed. Increase score by number of cells in block.
-		score += activeTetromino.cells.length;
-
 		const rows = activeTetromino.cells.map(cell => cell.row);
 		const minRow = Math.min(...rows);
 		const maxRow = Math.max(...rows);
