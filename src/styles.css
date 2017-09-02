@@ -30,7 +30,7 @@ h1 {
 }
 
 .app-side-panel {
-	margin-left: 20px;
+	margin-left: 1em;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -89,23 +89,20 @@ h1 {
 	100% {
 		opacity: 1;
 	}
-
-}
-
-.app-scoreboard {
-	width: 100%;
-	display: inline-block;
-	bottom: 0;
 }
 
 .app-scoreboard-box {
-	padding: 1em 2em;
+	padding: 0.5em 1em;
 	border: 1px solid #aaaaaa;
-	margin-top: 1em;
 	box-sizing: border-box;
 	text-align: center;
 	background: linear-gradient(to bottom, #f3f9ff, #ffffff);
 }
+
+.app-scoreboard .app-scoreboard-box:not(:first-child) {
+	margin-top: 1em;
+}
+
 .app-scoreboard-box-value {
 	font-size: 2.5em;
 }
@@ -129,12 +126,12 @@ h1 {
 .app-next-tetromino-wrapper {
 	border: 1px solid #aaa;
 	box-sizing: border-box;
-	padding: 1em 2em;
+	padding: 0.5em 1em;
 	background: linear-gradient(to bottom, #f3f9ff, #ffffff);
 }
 .app-next-tetromino {
 	overflow: hidden;
-	margin: 1em auto;
+	margin: 1em auto 0 auto;
 	position: relative;
 }
 
@@ -144,7 +141,7 @@ h1 {
 	font-size: 0.8em;
 }
 
-.app-controls button {
+button {
 	width: 100%;
 	border: 1px solid #aaa;
 	background-color: white;
@@ -152,17 +149,24 @@ h1 {
 	padding: 1em;
 	cursor: pointer;
 	font-size: 0.8em;
-	margin-bottom: 1em;
 	outline: 0;
 	display: block;
 }
 
-.app-controls button:disabled {
+.app-controls button:not(:first-child) {
+	margin-top: 1em;
+}
+
+button:disabled {
 	opacity: 0.6;
 	cursor: default;
 }
 
-.app-controls button:not(:disabled):hover {
+button:not(:disabled):hover {
 	color: #2338bc;
 	border-color: #2338bc;
+}
+
+.app-footer {
+	font-size: 0.8em;
 }

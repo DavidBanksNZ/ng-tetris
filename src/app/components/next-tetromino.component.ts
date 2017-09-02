@@ -9,7 +9,7 @@ import {offsetTetromino} from '../helpers/offsetTetromino';
 	template: `
 		<div
 			class="app-next-tetromino-wrapper"
-			[style.height]="(6 * cellSize) + 'px'"
+			[style.height]="(4 * cellSize + 60) + 'px'"
 		>
 			<div class="app-next-tetromino-label">Next Tetromino</div>
 			<div

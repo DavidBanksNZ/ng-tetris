@@ -46,8 +46,13 @@ import {TimerService} from '../providers/timer.provider';
 						[lines]="state.linesUntilNextLevel"
 						[score]="state.score">
 					</app-scoreboard>
+
+					<app-help></app-help>
 				</div>
 
+			</div>
+			<div class="app-footer">
+				<p>Built by David Banks. <a href="https://github.com/DavidBanksNZ/ng-tetris/">GitHub Repo</a></p>
 			</div>
 		</div>
 	`

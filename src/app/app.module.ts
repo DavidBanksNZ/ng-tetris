@@ -11,6 +11,7 @@ import {ControlsComponent} from './components/controls.component';
 import {TimerComponent} from './components/scoreboard.component';
 import {NextTetrominoComponent} from './components/next-tetromino.component';
 import {TimerService} from './providers/timer.provider';
+import {HelpComponent} from './components/help.component';
 
 @NgModule({
 	declarations: [
@@ -20,7 +21,8 @@ import {TimerService} from './providers/timer.provider';
 		TetrominoComponent,
 		ControlsComponent,
 		TimerComponent,
-		NextTetrominoComponent
+		NextTetrominoComponent,
+		HelpComponent
 	],
 	imports: [
 		BrowserModule,
