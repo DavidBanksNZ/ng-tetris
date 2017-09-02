@@ -1,15 +1,15 @@
-import {Action} from '@ngrx/store';
-
 import {ITetrisState} from '../state.interface';
 import {TetrominoType} from '../../enums/tetromino.enum';
 import {Orientation} from '../../enums/orientation.enum';
 import {ICell} from '../../interfaces/cell.interface';
 import {unique} from '../../helpers/unique';
 import {calculateSpacesLeft} from '../../helpers/calculateMaxSpacesLeft';
+import {ActionWithPayload} from '../../interfaces/actionWithPayload.interface';
 
 
-export function rotateActiveTetrominoMapper(state: ITetrisState, action: Action): ITetrisState {
+export function rotateActiveTetrominoMapper(state: ITetrisState, action: ActionWithPayload<boolean>): ITetrisState {
 
+	const isClockwise = action.payload;
 	let {activeTetromino} = state;
 	const {unclearedCells, numCols, numRows} = state;
 	const {unrotatedCells, type, orientation} = activeTetromino;
@@ -21,20 +21,20 @@ export function rotateActiveTetrominoMapper(state: ITetrisState, action: Action)
 	// Determine the angle to rotate by and the new orientation
 	switch (orientation) {
 		case Orientation.Normal:
-			newOrientation = Orientation.FlippedLeft;
-			angle = -0.5 * Math.PI;
+			newOrientation = isClockwise ? Orientation.FlippedLeft : Orientation.FlippedRight;
+			angle = (isClockwise ? -0.5 : -1.5) * Math.PI;
 			break;
 		case Orientation.FlippedLeft:
-			newOrientation = Orientation.UpsideDown;
-			angle = -1 * Math.PI;
+			newOrientation = isClockwise ? Orientation.UpsideDown: Orientation.Normal;
+			angle = (isClockwise ? -1 : 0) * Math.PI;
 			break;
 		case Orientation.UpsideDown:
-			newOrientation = Orientation.FlippedRight;
-			angle = -1.5 * Math.PI;
+			newOrientation = isClockwise ? Orientation.FlippedRight : Orientation.FlippedLeft;
+			angle = (isClockwise ? -1.5 : -0.5) * Math.PI;
 			break;
 		case Orientation.FlippedRight:
-			newOrientation = Orientation.Normal;
-			angle = -2 * Math.PI;
+			newOrientation = isClockwise ? Orientation.Normal : Orientation.UpsideDown;
+			angle = (isClockwise ? 0 : -1) * Math.PI;
 			break;
 		default:
 			newOrientation = orientation;
@@ -58,7 +58,7 @@ export function rotateActiveTetrominoMapper(state: ITetrisState, action: Action)
 	// of the board.
 	let maxRow = Math.max(...cells.map(cell => cell.row));
 	const forceToBottom = maxRow  === numRows - 1;
-	cells = rotate(unrotatedCells, angle, centroid);
+	cells = angle !== 0 ? rotate(unrotatedCells, angle, centroid) : [...unrotatedCells];
 
 	if (forceToBottom) {
 		const formerMaxRow = maxRow;

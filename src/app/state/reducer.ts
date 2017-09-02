@@ -12,6 +12,7 @@ import {moveActiveTetrominoRightMapper} from './mappers/moveActiveTetrominoRight
 import {rotateActiveTetrominoMapper} from './mappers/rotateActiveTetromino';
 import {newGameMapper} from './mappers/newGame';
 import {togglePauseMapper} from './mappers/togglePause';
+import {ActionWithPayload} from '../interfaces/actionWithPayload.interface';
 
 
 const INITIAL_STATE: ITetrisState = {
@@ -59,7 +60,7 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 			return moveActiveTetrominoRightMapper(state, action);
 
 		case ROTATE_ACTIVE_TETROMINO:
-			return rotateActiveTetrominoMapper(state, action);
+			return rotateActiveTetrominoMapper(state, (action as ActionWithPayload<boolean>));
 
 		default:
 			return state;

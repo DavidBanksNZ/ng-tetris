@@ -37,7 +37,7 @@ export class BoardComponent {
 	@Output() onMoveLeft = new EventEmitter<void>();
 	@Output() onMoveRight = new EventEmitter<void>();
 	@Output() onSoftDrop = new EventEmitter<void>();
-	@Output() onRotate = new EventEmitter<void>();
+	@Output() onRotate = new EventEmitter<boolean>();
 	@Output() onHardDrop = new EventEmitter<void>();
 	@Output() onTogglePause = new EventEmitter<void>();
 	@Output() onNewGame = new EventEmitter<void>();
@@ -67,8 +67,13 @@ export class BoardComponent {
 					this.onMoveRight.emit();
 					break;
 				case 38:
-					// Up arrow key
-					this.onRotate.emit();
+				case 90:
+					// Up arrow key, z key
+					this.onRotate.emit(true);
+					break;
+				case 88:
+					// Up arrow key, x key
+					this.onRotate.emit(false);
 					break;
 				case 40:
 					// Down arrow key

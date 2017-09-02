@@ -35,6 +35,6 @@ export function moveActiveTetrominoRight(): Action {
 	return {type: MOVE_ACTIVE_TETROMINO_RIGHT};
 }
 
-export function rotateActiveTetromino(): Action {
-	return {type: ROTATE_ACTIVE_TETROMINO};
+export function rotateActiveTetromino(isClockwise: boolean): ActionWithPayload<boolean> {
+	return {type: ROTATE_ACTIVE_TETROMINO, payload: isClockwise};
 }

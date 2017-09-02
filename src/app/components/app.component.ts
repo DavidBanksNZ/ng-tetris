@@ -24,7 +24,7 @@ import {TimerService} from '../providers/timer.provider';
 					(onMoveRight)="moveRight()"
 					(onTogglePause)="togglePause()"
 					(onNewGame)="newGame()"
-					(onRotate)="rotate()">
+					(onRotate)="rotate($event)">
 				</app-board>
 
 				<div class="app-side-panel">
@@ -88,8 +88,8 @@ export class AppComponent implements AfterViewInit {
 		this.store.dispatch(moveActiveTetrominoRight());
 	}
 
-	public rotate(): void {
-		this.store.dispatch(rotateActiveTetromino());
+	public rotate(isClockwise: boolean): void {
+		this.store.dispatch(rotateActiveTetromino(isClockwise));
 	}
 
 }
