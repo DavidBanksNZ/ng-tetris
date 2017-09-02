@@ -22,6 +22,7 @@ export function newGameMapper(state: ITetrisState, action: Action): ITetrisState
 		unclearedCells: [],
 		activeTetromino,
 		ghostCells: activeTetromino.cells.map(cell => ({...cell, row: cell.row + state.numRows})),
-		nextTetromino: generateRandomTetromino()
+		nextTetromino: generateRandomTetromino(),
+		isHelpModalOpen: false
 	};
 }

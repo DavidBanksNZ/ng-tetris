@@ -56,7 +56,7 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 			return {
 				...state,
 				isHelpModalOpen,
-				isPaused: true
+				isTiming: false
 			};
 
 		case SOFT_DROP:

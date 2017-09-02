@@ -14,7 +14,8 @@ export function togglePauseMapper(state: ITetrisState, action: Action): ITetrisS
 		return {
 			...state,
 			isTiming: true,
-			timestamp: Date.now()
+			timestamp: Date.now(),
+			isHelpModalOpen: false
 		};
 	}
 }

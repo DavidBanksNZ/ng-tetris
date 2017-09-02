@@ -21,7 +21,7 @@ export class TetrominoComponent {
 	@Input() readonly isGhost: boolean;
 
 	// Fine to track by cell index, tetromino always has 4 cells.
-	trackByFn(index, cell) {
+	trackByFn(index) {
 		return index;
 	}
 }
