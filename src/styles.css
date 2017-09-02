@@ -45,7 +45,7 @@ h1 {
 }
 
 .app-cell-O {
-	background-color: hsl(59, 100%, 70%);
+	background-color: hsl(60, 100%, 70%);
 }
 
 .app-cell-Z {
@@ -57,7 +57,7 @@ h1 {
 }
 
 .app-cell-S {
-	background-color: hsl(135, 100%, 70%);
+	background-color: hsl(130, 100%, 70%);
 }
 
 .app-cell-J {
@@ -65,11 +65,11 @@ h1 {
 }
 
 .app-cell-T {
-	background-color: hsl(278, 100%, 70%);
+	background-color: hsl(285, 100%, 70%);
 }
 
 .app-cell-L {
-	background-color: hsl(28, 100%, 70%);
+	background-color: hsl(30, 100%, 70%);
 }
 
 .app-cell-ghost {
