@@ -11,7 +11,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@
 				[disabled]="!isStarted || isFinished"
 				(click)="pauseBtnClicked($event)"
 			>{{isPaused ? 'Resume Game' : 'Pause Game'}}</button>
-			<button type="button" (click)="onHelpBtnClick.emit()">Help</button>
+			<button type="button" (click)="helpBtnClicked($event)">Help</button>
 		</div>
 	`
 })
@@ -36,6 +36,11 @@ export class ControlsComponent {
 
 	newGameBtnClicked($event): void {
 		this.onNew.emit();
+		$event.target.blur();
+	}
+
+	helpBtnClicked($event): void {
+		this.onHelpBtnClick.emit();
 		$event.target.blur();
 	}
 }
