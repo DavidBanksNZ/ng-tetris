@@ -30,6 +30,7 @@ import {ITetrisState} from '../state/state.interface';
 			</app-tetromino>
 
 			<div class="app-paused-banner" *ngIf="isPaused">Game Paused</div>
+			<div class="app-game-over-banner" *ngIf="state.isFinished">Game Over!</div>
 		</div>
 	`
 })
