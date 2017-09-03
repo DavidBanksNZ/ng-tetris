@@ -44,10 +44,8 @@ export function rotateActiveTetrominoMapper(state: ITetrisState, action: ActionW
 
 	// Do not perform rotation for square - unnecessary.
 	if (type === TetrominoType.O) {
-		return {
-			...state,
-			activeTetromino: {...activeTetromino, orientation: newOrientation}
-		};
+		activeTetromino = {...activeTetromino, orientation: newOrientation};
+		return {...state, activeTetromino};
 	}
 
 	const centroid = getCentroid(unrotatedCells, type);

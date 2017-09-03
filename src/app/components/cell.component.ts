@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {ICell} from '../interfaces/cell.interface';
+import {TetrominoType} from '../enums/tetromino.enum';
 
 @Component({
 	selector: 'app-cell',
@@ -19,7 +20,7 @@ export class CellComponent {
 	@Input() readonly size: number;
 	@Input() readonly isGhost: boolean;
 
-	get cellClass(): string {
+	get cellClass(): 'ghost' | TetrominoType {
 		return this.isGhost ? 'ghost' : this.cell.type;
 	}
 }

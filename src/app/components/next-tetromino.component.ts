@@ -19,7 +19,7 @@ import {offsetTetromino} from '../helpers/offsetTetromino';
 				[style.top]="0.5 * (4 - rowSpan) * cellSize + 'px'"
 			>
 				<app-tetromino
-					[cells]="adjustTetrominoPosition(tetromino).cells"
+					[cells]="adjustTetrominoPosition().cells"
 					[cellSize]="cellSize"
 					[isGhost]="false">
 				</app-tetromino>
@@ -41,12 +41,12 @@ export class NextTetrominoComponent {
 		return Math.max(...rows) - Math.min(...rows) + 1;
 	}
 
-	adjustTetrominoPosition(tetromino: ITetromino | null): ITetromino | null {
-		if (tetromino === null) {
-			return tetromino;
+	adjustTetrominoPosition(): ITetromino | null {
+		if (this.tetromino === null) {
+			return this.tetromino;
 		}
 		const rowSpan = this.rowSpan;
-		return offsetTetromino(centerTetromino(tetromino, 3, false), 0, rowSpan, rowSpan, 3);
+		return offsetTetromino(centerTetromino(this.tetromino, 3, false), 0, rowSpan, rowSpan, 3);
 	}
 
 }

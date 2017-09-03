@@ -3,14 +3,13 @@ import {ActionWithPayload} from '../interfaces/actionWithPayload.interface';
 
 export const NEW_GAME = 'NEW_GAME';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
+export const TOGGLE_HELP_MODAL = 'TOGGLE_HELP_MODAL';
 
 export const SOFT_DROP = 'SOFT_DROP';
 export const HARD_DROP = 'HARD_DROP';
-export const MOVE_ACTIVE_TETROMINO_LEFT = 'MOVE_ACTIVE_TETROMINO_LEFT';
-export const MOVE_ACTIVE_TETROMINO_RIGHT = 'MOVE_ACTIVE_TETROMINO_RIGHT';
-export const ROTATE_ACTIVE_TETROMINO = 'ROTATE_ACTIVE_TETROMINO';
-
-export const TOGGLE_HELP_MODAL = 'TOGGLE_HELP_MODAL';
+export const MOVE_LEFT = 'MOVE_LEFT';
+export const MOVE_RIGHT = 'MOVE_RIGHT';
+export const ROTATE = 'ROTATE';
 
 
 export function newGame(): Action {
@@ -30,15 +29,15 @@ export function hardDrop(): Action {
 }
 
 export function moveActiveTetrominoLeft(): Action {
-	return {type: MOVE_ACTIVE_TETROMINO_LEFT};
+	return {type: MOVE_LEFT};
 }
 
 export function moveActiveTetrominoRight(): Action {
-	return {type: MOVE_ACTIVE_TETROMINO_RIGHT};
+	return {type: MOVE_RIGHT};
 }
 
 export function rotateActiveTetromino(isClockwise: boolean): ActionWithPayload<boolean> {
-	return {type: ROTATE_ACTIVE_TETROMINO, payload: isClockwise};
+	return {type: ROTATE, payload: isClockwise};
 }
 
 export function toggleHelpModal(isOpen: boolean): ActionWithPayload<boolean> {

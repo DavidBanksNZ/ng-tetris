@@ -2,8 +2,8 @@ import {ITetrisState} from './state.interface';
 import {Action} from '@ngrx/store';
 
 import {
-	SOFT_DROP, HARD_DROP, MOVE_ACTIVE_TETROMINO_LEFT, MOVE_ACTIVE_TETROMINO_RIGHT, NEW_GAME,
-	ROTATE_ACTIVE_TETROMINO, TOGGLE_PAUSE, TOGGLE_HELP_MODAL
+	SOFT_DROP, HARD_DROP, MOVE_LEFT, MOVE_RIGHT, NEW_GAME,
+	ROTATE, TOGGLE_PAUSE, TOGGLE_HELP_MODAL
 } from './actions';
 import {generateRandomTetromino} from '../helpers/generateRandomTetromino';
 import {moveActiveTetrominoDownMapper} from './mappers/moveActiveTetrominoDown';
@@ -63,13 +63,13 @@ export function tetrisReducer(state: ITetrisState = INITIAL_STATE, action: Actio
 		case HARD_DROP:
 			return moveActiveTetrominoDownMapper(state, action);
 
-		case MOVE_ACTIVE_TETROMINO_LEFT:
+		case MOVE_LEFT:
 			return moveActiveTetrominoLeftMapper(state, action);
 
-		case MOVE_ACTIVE_TETROMINO_RIGHT:
+		case MOVE_RIGHT:
 			return moveActiveTetrominoRightMapper(state, action);
 
-		case ROTATE_ACTIVE_TETROMINO:
+		case ROTATE:
 			return rotateActiveTetrominoMapper(state, (action as ActionWithPayload<boolean>));
 
 		default:
